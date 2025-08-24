@@ -19,7 +19,10 @@
   },
   "name":"OLC_CodeJam_2025",
   "resources":[
+    {"id":{"name":"obj_block","path":"objects/obj_block/obj_block.yy",},},
+    {"id":{"name":"obj_grid_manager","path":"objects/obj_grid_manager/obj_grid_manager.yy",},},
     {"id":{"name":"rm_main","path":"rooms/rm_main/rm_main.yy",},},
+    {"id":{"name":"spr_block_empty","path":"sprites/spr_block_empty/spr_block_empty.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
