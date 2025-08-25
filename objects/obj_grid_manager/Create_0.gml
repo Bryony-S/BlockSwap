@@ -63,21 +63,21 @@ cluster =
 		{
 			case CLUSTER_TYPE.BLOCK:
 				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x, _start_y + 1);
-				block_points[2].change_point(_start_x + 1, _start_y);
+				block_points[1].change_point(_start_x + 1, _start_y);
+				block_points[2].change_point(_start_x, _start_y + 1);
 				block_points[3].change_point(_start_x + 1, _start_y + 1);
 				break;
 			case CLUSTER_TYPE.LINE:
 				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x, _start_y + 1);
-				block_points[2].change_point(_start_x, _start_y + 2);
-				block_points[3].change_point(_start_x, _start_y + 3);
+				block_points[1].change_point(_start_x + 1, _start_y);
+				block_points[2].change_point(_start_x + 2, _start_y);
+				block_points[3].change_point(_start_x + 3, _start_y);
 				break;
 			case CLUSTER_TYPE.L_SHAPE:
 				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x, _start_y + 1);
-				block_points[2].change_point(_start_x + 1, _start_y);
-				block_points[3].change_point(_start_x + 2, _start_y);
+				block_points[1].change_point(_start_x + 1, _start_y);
+				block_points[2].change_point(_start_x + 2, _start_y);
+				block_points[3].change_point(_start_x, _start_y + 1);
 				break;
 			case CLUSTER_TYPE.REVERSE_L_SHAPE:
 				block_points[0].change_point(_start_x, _start_y);
@@ -86,21 +86,21 @@ cluster =
 				block_points[3].change_point(_start_x + 2, _start_y + 1);
 				break;
 			case CLUSTER_TYPE.S_SHAPE:
-				block_points[0].change_point(_start_x + 1, _start_y);
-				block_points[1].change_point(_start_x + 2, _start_y);
-				block_points[2].change_point(_start_x, _start_y + 1);
-				block_points[3].change_point(_start_x + 1, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.T_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
+				block_points[0].change_point(_start_x, _start_y + 1);
 				block_points[1].change_point(_start_x + 1, _start_y + 1);
 				block_points[2].change_point(_start_x + 1, _start_y);
 				block_points[3].change_point(_start_x + 2, _start_y);
 				break;
+			case CLUSTER_TYPE.T_SHAPE:
+				block_points[0].change_point(_start_x, _start_y);
+				block_points[1].change_point(_start_x + 1, _start_y);
+				block_points[2].change_point(_start_x + 2, _start_y);
+				block_points[3].change_point(_start_x + 1, _start_y + 1);
+				break;
 			case CLUSTER_TYPE.Z_SHAPE:
 				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y + 1);
-				block_points[2].change_point(_start_x + 1, _start_y);
+				block_points[1].change_point(_start_x + 1, _start_y);
+				block_points[2].change_point(_start_x + 1, _start_y + 1);
 				block_points[3].change_point(_start_x + 2, _start_y + 1);
 				break;
 		}
@@ -134,9 +134,12 @@ cluster =
 	/// @desc Creates a new cluster of blocks
 	create_new_cluster : function()
 	{
+		/*
 		shape_type = choose(CLUSTER_TYPE.BLOCK, CLUSTER_TYPE.LINE,
 		CLUSTER_TYPE.L_SHAPE, CLUSTER_TYPE.REVERSE_L_SHAPE, CLUSTER_TYPE.S_SHAPE,
 		CLUSTER_TYPE.T_SHAPE, CLUSTER_TYPE.Z_SHAPE);
+		*/
+		shape_type = CLUSTER_TYPE.BLOCK;
 		create_new_shape_points(shape_type,
 			irandom(array_length(global.block_grid) - 3), 0);
 		generate_cluster_in_grid();
@@ -220,6 +223,55 @@ cluster =
 				block_points[i].xx += _dir;
 			// Regenerate cluster
 			generate_cluster_in_grid();
+		}
+	},
+	
+	/// @func rotate(_dir);
+	/// @param {Real} _dir The direction the cluster is rotating
+	/// @desc Cluster rotates 90 degrees clockwise or anti-clockwise
+	rotate : function(_dir)
+	{
+		if shape_type != CLUSTER_TYPE.NONE
+		{
+			clear_cluster_from_grid();
+			// Check if rotating clockwise or anti-clockwise
+			var _clockwise = (_dir == 1);
+			// Check for space then rotate cluster
+			switch (shape_type)
+			{
+				case CLUSTER_TYPE.BLOCK:
+					#region Rotate block
+					// Block occupies same space when it rotates
+					// so no need to check for space, just rotate
+					var _new_points = array_create(4, BLOCK_STATE.EMPTY);
+					if _clockwise
+					{
+						// Rotate all points clockwise
+						_new_points[0] = block_points[2].block_shape;
+						_new_points[1] = block_points[0].block_shape;
+						_new_points[2] = block_points[3].block_shape;
+						_new_points[3] = block_points[1].block_shape;
+					}
+					else
+					{
+						// Rotate all points anti-clockwise
+						_new_points[0] = block_points[1].block_shape;
+						_new_points[1] = block_points[3].block_shape;
+						_new_points[2] = block_points[0].block_shape;
+						_new_points[3] = block_points[2].block_shape;
+					}
+					// Assign new points to block points
+					for (var i = 0; i < array_length(block_points); i++)
+						block_points[i].block_shape = _new_points[i];
+					generate_cluster_in_grid();
+					#endregion
+					break;
+				case CLUSTER_TYPE.LINE:
+					#region Check line rotation
+					
+					#endregion
+					break;
+			}
 		}
 	}
 };
