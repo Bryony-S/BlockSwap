@@ -33,12 +33,21 @@ function point(_x, _y) constructor
 	xx = _x;
 	yy = _y;
 	block_shape = choose(BLOCK_STATE.CIRCLE, BLOCK_STATE.DIAMOND,
-	BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE);
+		BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE);
+	
+	change_point = function(_x, _y)
+	{
+		xx = _x;
+		yy = _y;
+		block_shape = choose(BLOCK_STATE.CIRCLE, BLOCK_STATE.DIAMOND,
+			BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE);
+	}
 }
 // Define cluster
 cluster =
 {
-	block_points : [],
+	block_points : [new point(0, 0), new point(0, 0), new point(0, 0),
+		new point(0, 0)],
 	shape_type : CLUSTER_TYPE.NONE,
 	normal_timer : 30,
 	current_timer : 30,
@@ -53,46 +62,46 @@ cluster =
 		switch (_shape_type)
 		{
 			case CLUSTER_TYPE.BLOCK:
-				block_points[0] = new point(_start_x, _start_y);
-				block_points[1] = new point(_start_x, _start_y + 1);
-				block_points[2] = new point(_start_x + 1, _start_y);
-				block_points[3] = new point(_start_x + 1, _start_y + 1);
+				block_points[0].change_point(_start_x, _start_y);
+				block_points[1].change_point(_start_x, _start_y + 1);
+				block_points[2].change_point(_start_x + 1, _start_y);
+				block_points[3].change_point(_start_x + 1, _start_y + 1);
 				break;
 			case CLUSTER_TYPE.LINE:
-				block_points[0] = new point(_start_x, _start_y);
-				block_points[1] = new point(_start_x, _start_y + 1);
-				block_points[2] = new point(_start_x, _start_y + 2);
-				block_points[3] = new point(_start_x, _start_y + 3);
+				block_points[0].change_point(_start_x, _start_y);
+				block_points[1].change_point(_start_x, _start_y + 1);
+				block_points[2].change_point(_start_x, _start_y + 2);
+				block_points[3].change_point(_start_x, _start_y + 3);
 				break;
 			case CLUSTER_TYPE.L_SHAPE:
-				block_points[0] = new point(_start_x, _start_y);
-				block_points[1] = new point(_start_x, _start_y + 1);
-				block_points[2] = new point(_start_x + 1, _start_y);
-				block_points[3] = new point(_start_x + 2, _start_y);
+				block_points[0].change_point(_start_x, _start_y);
+				block_points[1].change_point(_start_x, _start_y + 1);
+				block_points[2].change_point(_start_x + 1, _start_y);
+				block_points[3].change_point(_start_x + 2, _start_y);
 				break;
 			case CLUSTER_TYPE.REVERSE_L_SHAPE:
-				block_points[0] = new point(_start_x, _start_y);
-				block_points[1] = new point(_start_x + 1, _start_y);
-				block_points[2] = new point(_start_x + 2, _start_y);
-				block_points[3] = new point(_start_x + 2, _start_y + 1);
+				block_points[0].change_point(_start_x, _start_y);
+				block_points[1].change_point(_start_x + 1, _start_y);
+				block_points[2].change_point(_start_x + 2, _start_y);
+				block_points[3].change_point(_start_x + 2, _start_y + 1);
 				break;
 			case CLUSTER_TYPE.S_SHAPE:
-				block_points[0] = new point(_start_x + 1, _start_y);
-				block_points[1] = new point(_start_x + 2, _start_y);
-				block_points[2] = new point(_start_x, _start_y + 1);
-				block_points[3] = new point(_start_x + 1, _start_y + 1);
+				block_points[0].change_point(_start_x + 1, _start_y);
+				block_points[1].change_point(_start_x + 2, _start_y);
+				block_points[2].change_point(_start_x, _start_y + 1);
+				block_points[3].change_point(_start_x + 1, _start_y + 1);
 				break;
 			case CLUSTER_TYPE.T_SHAPE:
-				block_points[0] = new point(_start_x, _start_y);
-				block_points[1] = new point(_start_x + 1, _start_y + 1);
-				block_points[2] = new point(_start_x + 1, _start_y);
-				block_points[3] = new point(_start_x + 2, _start_y);
+				block_points[0].change_point(_start_x, _start_y);
+				block_points[1].change_point(_start_x + 1, _start_y + 1);
+				block_points[2].change_point(_start_x + 1, _start_y);
+				block_points[3].change_point(_start_x + 2, _start_y);
 				break;
 			case CLUSTER_TYPE.Z_SHAPE:
-				block_points[0] = new point(_start_x, _start_y);
-				block_points[1] = new point(_start_x + 1, _start_y + 1);
-				block_points[2] = new point(_start_x + 1, _start_y);
-				block_points[3] = new point(_start_x + 2, _start_y + 1);
+				block_points[0].change_point(_start_x, _start_y);
+				block_points[1].change_point(_start_x + 1, _start_y + 1);
+				block_points[2].change_point(_start_x + 1, _start_y);
+				block_points[3].change_point(_start_x + 2, _start_y + 1);
 				break;
 		}
 	},
@@ -117,7 +126,7 @@ cluster =
 		CLUSTER_TYPE.L_SHAPE, CLUSTER_TYPE.REVERSE_L_SHAPE, CLUSTER_TYPE.S_SHAPE,
 		CLUSTER_TYPE.T_SHAPE, CLUSTER_TYPE.Z_SHAPE);
 		create_new_shape_points(shape_type,
-		irandom(array_length(global.block_grid) - 3), 0);
+			irandom(array_length(global.block_grid) - 3), 0);
 		generate_cluster_in_grid();
 	},
 	
@@ -164,7 +173,6 @@ cluster =
 				generate_cluster_in_grid();
 				// Clear cluster
 				shape_type = CLUSTER_TYPE.NONE;
-				array_clear(block_points);
 			}
 			else
 			{

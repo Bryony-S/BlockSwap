@@ -4,7 +4,7 @@ state = BLOCK_STATE.EMPTY;
 /// @func change_state(_new_state);
 /// @param {Enum.BLOCK_STATE} _new_state The block's new state
 /// @desc Changes block's state
-function change_state(_new_state)
+change_state = function(_new_state)
 {
 	state = _new_state;
 	// Change sprite
