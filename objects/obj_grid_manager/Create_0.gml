@@ -50,7 +50,6 @@ cluster =
 	/// @desc Clears block points and creates a new cluster shape
 	create_new_shape_points : function(_shape_type, _start_x, _start_y)
 	{
-		array_clear(block_points);
 		switch (_shape_type)
 		{
 			case CLUSTER_TYPE.BLOCK:
@@ -127,44 +126,54 @@ cluster =
 	fall : function()
 	{
 		current_timer = normal_timer;
-		// Clear cluster from grid
-		for (var i = 0; i < array_length(block_points); i++)
+		// No cluster, so generate new one at top of grid
+		if shape_type == CLUSTER_TYPE.NONE
 		{
-			var _x = block_points[i].xx;
-			var _y = block_points[i].yy;
-			global.block_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
-		}
-		// Check there is space below cluster for it to fall into
-		var _is_space = true;
-		for (var i = 0; i < array_length(block_points); i++)
-		{
-			var _x = block_points[i].xx;
-			var _y = block_points[i].yy;
-			if (_y + 1) >= array_length(global.block_grid[0])
-			{
-				_is_space = false;
-				break;
-			}
-			else if global.block_grid[_x, _y + 1].state != BLOCK_STATE.EMPTY
-			{
-				_is_space = false;
-				break;
-			}
-		}
-		// Generate new cluster
-		if !_is_space
-		{
-			// Regenerate cluster in same space
-			generate_cluster_in_grid();
+			create_new_cluster();
 		}
 		else
 		{
-			// Generate cluster 1 space down
+			// Clear cluster from grid
 			for (var i = 0; i < array_length(block_points); i++)
-				block_points[i].yy++;
-			generate_cluster_in_grid();
+			{
+				var _x = block_points[i].xx;
+				var _y = block_points[i].yy;
+				global.block_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
+			}
+			// Check there is space below cluster for it to fall into
+			var _is_space = true;
+			for (var i = 0; i < array_length(block_points); i++)
+			{
+				var _x = block_points[i].xx;
+				var _y = block_points[i].yy;
+				if (_y + 1) >= array_length(global.block_grid[0])
+				{
+					_is_space = false;
+					break;
+				}
+				else if global.block_grid[_x, _y + 1].state != BLOCK_STATE.EMPTY
+				{
+					_is_space = false;
+					break;
+				}
+			}
+			// Generate cluster
+			if !_is_space
+			{
+				// Regenerate cluster in same space
+				generate_cluster_in_grid();
+				// Clear cluster
+				shape_type = CLUSTER_TYPE.NONE;
+				array_clear(block_points);
+			}
+			else
+			{
+				// Generate cluster 1 space down
+				for (var i = 0; i < array_length(block_points); i++)
+					block_points[i].yy++;
+				generate_cluster_in_grid();
+			}
 		}
 	}
 };
-cluster.create_new_cluster();
 #endregion
