@@ -1,0 +1,9 @@
+// Block state
+enum BLOCK_STATE
+{
+	EMPTY,
+	SQUARE,
+	CIRCLE,
+	DIAMOND,
+	TRIANGLE
+}

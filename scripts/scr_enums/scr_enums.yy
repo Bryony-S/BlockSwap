@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_enums",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_enums",
+  "parent":{
+    "name":"OLC_CodeJam_2025",
+    "path":"OLC_CodeJam_2025.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

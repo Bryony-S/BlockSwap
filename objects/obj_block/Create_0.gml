@@ -1,13 +1,4 @@
 /// @desc Define block variables and functions
-// Block state
-enum BLOCK_STATE
-{
-	EMPTY,
-	SQUARE,
-	CIRCLE,
-	DIAMOND,
-	TRIANGLE
-}
 state = BLOCK_STATE.EMPTY;
 
 /// @func change_state(_new_state);
@@ -35,12 +26,4 @@ function change_state(_new_state)
 			sprite_index = spr_block_triangle;
 			break;
 	}
-}
-
-/// @func change_state_random();
-/// @desc Changes block's state to a random state (except empty)
-function change_state_random()
-{
-	change_state(choose(BLOCK_STATE.CIRCLE, BLOCK_STATE.DIAMOND,
-	BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE));
 }
