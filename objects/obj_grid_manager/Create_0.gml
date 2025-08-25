@@ -118,6 +118,18 @@ cluster =
 		}
 	},
 	
+	/// @func clear_cluster_from_grid();
+	/// @desc Clears cluster from grid
+	clear_cluster_from_grid : function()
+	{
+		for (var i = 0; i < array_length(block_points); i++)
+		{
+			var _x = block_points[i].xx;
+			var _y = block_points[i].yy;
+			global.block_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
+		}
+	},
+	
 	/// @func create_new_cluster();
 	/// @desc Creates a new cluster of blocks
 	create_new_cluster : function()
@@ -142,13 +154,7 @@ cluster =
 		}
 		else
 		{
-			// Clear cluster from grid
-			for (var i = 0; i < array_length(block_points); i++)
-			{
-				var _x = block_points[i].xx;
-				var _y = block_points[i].yy;
-				global.block_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
-			}
+			clear_cluster_from_grid();
 			// Check there is space below cluster for it to fall into
 			var _is_space = true;
 			for (var i = 0; i < array_length(block_points); i++)
@@ -181,6 +187,39 @@ cluster =
 					block_points[i].yy++;
 				generate_cluster_in_grid();
 			}
+		}
+	},
+	
+	/// @func move_horizontally(_dir);
+	/// @param {Real} _dir The direction for the cluster to move in horizontally
+	/// @desc Cluster moves 1 block left or right
+	move_horizontally : function(_dir)
+	{
+		if shape_type != CLUSTER_TYPE.NONE
+		{
+			clear_cluster_from_grid();
+			// Check there is space for cluster to move into
+			var _is_space = true;
+			for (var i = 0; i < array_length(block_points); i++)
+			{
+				var _new_x = block_points[i].xx + _dir;
+				var _y = block_points[i].yy;
+				if (_new_x >= array_length(global.block_grid)) || (_new_x < 0)
+				{
+					_is_space = false;
+					break;
+				}
+				else if global.block_grid[_new_x, _y].state != BLOCK_STATE.EMPTY
+				{
+					_is_space = false;
+					break;
+				}
+			}
+			// Move cluster 1 space to the left or right
+			if (_is_space) for (var i = 0; i < array_length(block_points); i++)
+				block_points[i].xx += _dir;
+			// Regenerate cluster
+			generate_cluster_in_grid();
 		}
 	}
 };
