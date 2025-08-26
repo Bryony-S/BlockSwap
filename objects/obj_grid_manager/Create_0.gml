@@ -10,8 +10,12 @@ var _start_y = (room_height / 2) - ((_grid_height / 2) * _block_size);
 for (var i = 0; i < _grid_width; i++)
 {
 	for (var j = 0; j < _grid_height; j++)
+	{
 		global.block_grid[i][j] = instance_create_layer(_start_x + (_block_size * i),
-		_start_y + (_block_size * j), "Instances", obj_block);
+			_start_y + (_block_size * j), "Instances", obj_block);
+		global.block_grid[i][j].position.xx	= i;
+		global.block_grid[i][j].position.yy	= j;
+	}
 }
 #endregion
 #region Define cluster
@@ -180,8 +184,9 @@ cluster =
 			{
 				// Regenerate cluster in same space
 				generate_cluster_in_grid();
-				// Clear cluster
+				// Cluster is set
 				shape_type = CLUSTER_TYPE.NONE;
+				obj_grid_manager.check_grid_for_tile_match();
 			}
 			else
 			{
@@ -297,12 +302,16 @@ cluster =
 			else
 			{
 				// Calculate new point
+				// Source for rotation algorithm:
+				// https://www.baeldung.com/cs/tetris-piece-rotation-algorithm
 				var _x = block_points[i].position.xx -
 					block_points[_origin_index].position.xx;
 				var _y = block_points[i].position.yy -
 					block_points[_origin_index].position.yy;
-				var _xx = round(_x * dcos(_rotation_angle) - _y * dsin(_rotation_angle));
-				var _yy = round(_x * dsin(_rotation_angle) + _y * dcos(_rotation_angle));
+				var _xx = round(_x * dcos(_rotation_angle) -
+					_y * dsin(_rotation_angle));
+				var _yy = round(_x * dsin(_rotation_angle) +
+					_y * dcos(_rotation_angle));
 				_new_points[i].xx = _xx + block_points[_origin_index].position.xx;
 				_new_points[i].yy = _yy + block_points[_origin_index].position.yy;
 			}
@@ -342,4 +351,73 @@ cluster =
 	}
 };
 #endregion
+#endregion
+#region Grid functions
+/// @func check_grid_for_tile_match();
+/// @desc Checks grid for any vertical or horizontal block matches of 3+ in a row
+check_grid_for_tile_match = function()
+{
+	// Arrays for flagging matches
+	var _horizontal_match = [];
+	for (var i = 0; i < array_length(global.block_grid); i++)
+	{
+		for (var j = 0; j < array_length(global.block_grid[0]); j++)
+			_horizontal_match[i][j] = false;
+	}
+	var _vertical_match = [];
+	for (var i = 0; i < array_length(global.block_grid); i++)
+	{
+		for (var j = 0; j < array_length(global.block_grid[0]); j++)
+			_vertical_match[i][j] = false;
+	}
+	// Check for matches
+	for (var i = 0; i < array_length(global.block_grid); i++)
+	{
+		for (var j = 0; j < array_length(global.block_grid[0]); j++)
+		{
+			if global.block_grid[i][j].state != BLOCK_STATE.EMPTY
+			{
+				// Check for horizontal match
+				if !_horizontal_match[i][j]
+				{
+					var _matches = global.block_grid[i][j].get_horizontal_matches();
+					if array_length(_matches) >= MIN_MATCH
+					{
+						// Flag matches for removal
+						for (var k = 0; k < array_length(_matches); k++)
+						{
+							var _xx = _matches[k].xx;
+							var _yy = _matches[k].yy;
+							_horizontal_match[_xx][_yy] = true;
+						}
+					}
+				}
+				// Check for vertical match
+				if !_vertical_match[i][j]
+				{
+					var _matches = global.block_grid[i][j].get_vertical_matches();
+					if array_length(_matches) >= MIN_MATCH
+					{
+						// Flag matches for removal
+						for (var k = 0; k < array_length(_matches); k++)
+						{
+							var _xx = _matches[k].xx;
+							var _yy = _matches[k].yy;
+							_vertical_match[_xx][_yy] = true;
+						}
+					}
+				}
+			}
+		}
+	}
+	// Remove all matches
+	for (var i = 0; i < array_length(global.block_grid); i++)
+	{
+		for (var j = 0; j < array_length(global.block_grid[0]); j++)
+		{
+			if _horizontal_match[i][j] || _vertical_match[i][j]
+				global.block_grid[i][j].change_state(BLOCK_STATE.EMPTY);
+		}
+	}
+}
 #endregion
