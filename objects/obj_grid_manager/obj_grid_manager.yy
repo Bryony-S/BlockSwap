@@ -9,8 +9,8 @@
   "name":"obj_grid_manager",
   "overriddenProperties":[],
   "parent":{
-    "name":"OLC_CodeJam_2025",
-    "path":"OLC_CodeJam_2025.yyp",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,
