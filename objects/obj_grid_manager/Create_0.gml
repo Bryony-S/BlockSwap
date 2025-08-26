@@ -27,31 +27,33 @@ enum CLUSTER_TYPE
 	S_SHAPE,
 	NONE
 }
-// Define cluster point
-function point(_x, _y) constructor
+#region Define cluster point
+/// @func point(_x, _y);
+/// @param {Real} _x The x co-ordinate of the cluster point
+/// @param {Real} _y The y co-ordinate of the cluster point
+/// @desc Represents one block point in the cluster
+function point() constructor
 {
-	xx = _x;
-	yy = _y;
+	position = new vector2(0, 0);
 	block_shape = choose(BLOCK_STATE.CIRCLE, BLOCK_STATE.DIAMOND,
 		BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE);
 	
 	change_point = function(_x, _y)
 	{
-		xx = _x;
-		yy = _y;
+		position.xx = _x;
+		position.yy = _y;
 		block_shape = choose(BLOCK_STATE.CIRCLE, BLOCK_STATE.DIAMOND,
 			BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE);
 	}
 }
-// Define cluster
+#endregion
+#region Define cluster
 cluster =
 {
-	block_points : [new point(0, 0), new point(0, 0), new point(0, 0),
-		new point(0, 0)],
+	block_points : [new point(), new point(), new point(), new point()],
 	shape_type : CLUSTER_TYPE.NONE,
 	normal_timer : 30,
 	current_timer : 30,
-	
 	/// @func create_new_shape_points(_shape_type, _start_x, _start_y);
 	/// @param {Enum.CLUSTER_TYPE} _shape_type The shape of the cluster
 	/// @param {Real} _start_x The grid x point of the top-left corner of the shape
@@ -112,8 +114,8 @@ cluster =
 	{
 		for (var i = 0; i < array_length(block_points); i++)
 		{
-			var _x = block_points[i].xx;
-			var _y = block_points[i].yy;
+			var _x = block_points[i].position.xx;
+			var _y = block_points[i].position.yy;
 			global.block_grid[_x, _y].change_state(block_points[i].block_shape);
 		}
 	},
@@ -124,8 +126,8 @@ cluster =
 	{
 		for (var i = 0; i < array_length(block_points); i++)
 		{
-			var _x = block_points[i].xx;
-			var _y = block_points[i].yy;
+			var _x = block_points[i].position.xx;
+			var _y = block_points[i].position.yy;
 			global.block_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
 		}
 	},
@@ -134,14 +136,11 @@ cluster =
 	/// @desc Creates a new cluster of blocks
 	create_new_cluster : function()
 	{
-		/*
 		shape_type = choose(CLUSTER_TYPE.BLOCK, CLUSTER_TYPE.LINE,
 		CLUSTER_TYPE.L_SHAPE, CLUSTER_TYPE.REVERSE_L_SHAPE, CLUSTER_TYPE.S_SHAPE,
 		CLUSTER_TYPE.T_SHAPE, CLUSTER_TYPE.Z_SHAPE);
-		*/
-		shape_type = CLUSTER_TYPE.BLOCK;
 		create_new_shape_points(shape_type,
-			irandom(array_length(global.block_grid) - 3), 0);
+			irandom(array_length(global.block_grid) - 4), 0);
 		generate_cluster_in_grid();
 	},
 	
@@ -162,8 +161,8 @@ cluster =
 			var _is_space = true;
 			for (var i = 0; i < array_length(block_points); i++)
 			{
-				var _x = block_points[i].xx;
-				var _y = block_points[i].yy;
+				var _x = block_points[i].position.xx;
+				var _y = block_points[i].position.yy;
 				if (_y + 1) >= array_length(global.block_grid[0])
 				{
 					_is_space = false;
@@ -187,7 +186,7 @@ cluster =
 			{
 				// Generate cluster 1 space down
 				for (var i = 0; i < array_length(block_points); i++)
-					block_points[i].yy++;
+					block_points[i].position.yy++;
 				generate_cluster_in_grid();
 			}
 		}
@@ -205,8 +204,8 @@ cluster =
 			var _is_space = true;
 			for (var i = 0; i < array_length(block_points); i++)
 			{
-				var _new_x = block_points[i].xx + _dir;
-				var _y = block_points[i].yy;
+				var _new_x = block_points[i].position.xx + _dir;
+				var _y = block_points[i].position.yy;
 				if (_new_x >= array_length(global.block_grid)) || (_new_x < 0)
 				{
 					_is_space = false;
@@ -220,7 +219,7 @@ cluster =
 			}
 			// Move cluster 1 space to the left or right
 			if (_is_space) for (var i = 0; i < array_length(block_points); i++)
-				block_points[i].xx += _dir;
+				block_points[i].position.xx += _dir;
 			// Regenerate cluster
 			generate_cluster_in_grid();
 		}
@@ -234,45 +233,112 @@ cluster =
 		if shape_type != CLUSTER_TYPE.NONE
 		{
 			clear_cluster_from_grid();
-			// Check if rotating clockwise or anti-clockwise
-			var _clockwise = (_dir == 1);
-			// Check for space then rotate cluster
-			switch (shape_type)
+			// Attempt to rotate cluster
+			if shape_type == CLUSTER_TYPE.BLOCK
 			{
-				case CLUSTER_TYPE.BLOCK:
-					#region Rotate block
-					// Block occupies same space when it rotates
-					// so no need to check for space, just rotate
-					var _new_points = array_create(4, BLOCK_STATE.EMPTY);
-					if _clockwise
+				// Block cluster type - just rotate the block shapes
+				var _new_points = array_create(4, BLOCK_STATE.EMPTY);
+				if _dir == 1
+				{
+					// Rotate all block shapes clockwise
+					_new_points[0] = block_points[2].block_shape;
+					_new_points[1] = block_points[0].block_shape;
+					_new_points[2] = block_points[3].block_shape;
+					_new_points[3] = block_points[1].block_shape;
+				}
+				else
+				{
+					// Rotate all block shapes anti-clockwise
+					_new_points[0] = block_points[1].block_shape;
+					_new_points[1] = block_points[3].block_shape;
+					_new_points[2] = block_points[0].block_shape;
+					_new_points[3] = block_points[2].block_shape;
+				}
+				// Assign block shapes to block points
+				for (var i = 0; i < array_length(block_points); i++)
+					block_points[i].block_shape = _new_points[i];
+			}
+			else
+			{
+				// Rotate the entire cluster, trying different origin points
+				if !try_rotate_cluster(1, 90 * _dir)
+				{
+					if !try_rotate_cluster(2, 90 * _dir)
 					{
-						// Rotate all points clockwise
-						_new_points[0] = block_points[2].block_shape;
-						_new_points[1] = block_points[0].block_shape;
-						_new_points[2] = block_points[3].block_shape;
-						_new_points[3] = block_points[1].block_shape;
+						if !try_rotate_cluster(0, 90 * _dir)
+							try_rotate_cluster(3, 90 * _dir);
 					}
-					else
-					{
-						// Rotate all points anti-clockwise
-						_new_points[0] = block_points[1].block_shape;
-						_new_points[1] = block_points[3].block_shape;
-						_new_points[2] = block_points[0].block_shape;
-						_new_points[3] = block_points[2].block_shape;
-					}
-					// Assign new points to block points
-					for (var i = 0; i < array_length(block_points); i++)
-						block_points[i].block_shape = _new_points[i];
-					generate_cluster_in_grid();
-					#endregion
-					break;
-				case CLUSTER_TYPE.LINE:
-					#region Check line rotation
-					
-					#endregion
-					break;
+				}
+			}
+			// Regenerate cluster
+			generate_cluster_in_grid();
+		}
+	},
+	
+	/// @func try_rotate_cluster(_origin_index, _rotation_angle);
+	/// @param {Real} _origin_index The index of the block point that will be used as the origin of rotation
+	/// @param {Real} _rotation_angle The angle at which the cluster will be rotated (either 90 or -90 degrees)
+	/// @return {Bool} True if rotation was successful, false if not
+	/// @desc Attempts to rotate a cluster
+	try_rotate_cluster : function(_origin_index, _rotation_angle)
+	{
+		// Calculate new points for each block in cluster
+		var _new_points = [new vector2(0, 0), new vector2(0, 0), new vector2(0, 0),
+			new vector2(0, 0)];
+		for (var i = 0; i < array_length(block_points); i++)
+		{
+			if i == _origin_index
+			{
+				// Origin stays at same point
+				_new_points[i].xx = block_points[i].position.xx;
+				_new_points[i].yy = block_points[i].position.yy;
+			}
+			else
+			{
+				// Calculate new point
+				var _x = block_points[i].position.xx -
+					block_points[_origin_index].position.xx;
+				var _y = block_points[i].position.yy -
+					block_points[_origin_index].position.yy;
+				var _xx = round(_x * dcos(_rotation_angle) - _y * dsin(_rotation_angle));
+				var _yy = round(_x * dsin(_rotation_angle) + _y * dcos(_rotation_angle));
+				_new_points[i].xx = _xx + block_points[_origin_index].position.xx;
+				_new_points[i].yy = _yy + block_points[_origin_index].position.yy;
 			}
 		}
+		// Check there is space for new points
+		var _is_space = true;
+		for (var i = 0; i < array_length(_new_points); i++)
+		{
+			// No need to check origin point
+			if i != _origin_index
+			{
+				if (_new_points[i].xx < 0) || (_new_points[i].yy < 0) ||
+					(_new_points[i].xx >= array_length(global.block_grid)) ||
+					(_new_points[i].yy >= array_length(global.block_grid[0])) ||
+					(global.block_grid[_new_points[i].xx, _new_points[i].yy].state !=
+					BLOCK_STATE.EMPTY)
+				{
+					_is_space = false;
+					break;
+				}
+			}
+		}
+		// Rotate cluster points
+		if _is_space
+		{
+			for (var i = 0; i < array_length(block_points); i++)
+			{
+				// Origin point doesn't change
+				if i != _origin_index
+				{
+					block_points[i].position.xx = _new_points[i].xx;
+					block_points[i].position.yy = _new_points[i].yy;
+				}
+			}
+		}
+		return _is_space;
 	}
 };
+#endregion
 #endregion

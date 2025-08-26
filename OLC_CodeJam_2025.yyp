@@ -367,6 +367,7 @@
     {"id":{"name":"InputX","path":"scripts/InputX/InputX.yy",},},
     {"id":{"name":"InputY","path":"scripts/InputY/InputY.yy",},},
     {"id":{"name":"scr_enums","path":"scripts/scr_enums/scr_enums.yy",},},
+    {"id":{"name":"scr_vector2","path":"scripts/scr_vector2/scr_vector2.yy",},},
     {"id":{"name":"spr_block_circle","path":"sprites/spr_block_circle/spr_block_circle.yy",},},
     {"id":{"name":"spr_block_diamond","path":"sprites/spr_block_diamond/spr_block_diamond.yy",},},
     {"id":{"name":"spr_block_empty","path":"sprites/spr_block_empty/spr_block_empty.yy",},},
