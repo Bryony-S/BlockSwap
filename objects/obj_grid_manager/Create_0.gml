@@ -54,6 +54,7 @@ cluster =
 	shape_type : CLUSTER_TYPE.NONE,
 	normal_timer : 30,
 	current_timer : 30,
+	
 	/// @func create_new_shape_points(_shape_type, _start_x, _start_y);
 	/// @param {Enum.CLUSTER_TYPE} _shape_type The shape of the cluster
 	/// @param {Real} _start_x The grid x point of the top-left corner of the shape

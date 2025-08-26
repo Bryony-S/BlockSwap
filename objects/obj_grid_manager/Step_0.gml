@@ -10,3 +10,5 @@ if (_horizontal_movement != 0) cluster.move_horizontally(_horizontal_movement);
 var _rotate =
 	(InputPressed(INPUT_VERB.ROTATE_RIGHT) - InputPressed(INPUT_VERB.ROTATE_LEFT));
 if (_rotate != 0) cluster.rotate(_rotate);
+// Player moves cluster down faster
+if (InputPressed(INPUT_VERB.FALL)) cluster.fall();
