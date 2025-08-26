@@ -366,13 +366,13 @@ check_grid_for_tile_match = function()
 		for (var i = 0; i < array_length(global.block_grid); i++)
 		{
 			for (var j = 0; j < array_length(global.block_grid[0]); j++)
-				_horizontal_match[i][j] = false;
+				_horizontal_match[i][j] = 0;
 		}
 		var _vertical_match = [];
 		for (var i = 0; i < array_length(global.block_grid); i++)
 		{
 			for (var j = 0; j < array_length(global.block_grid[0]); j++)
-				_vertical_match[i][j] = false;
+				_vertical_match[i][j] = 0;
 		}
 		// Check for matches
 		for (var i = 0; i < array_length(global.block_grid); i++)
@@ -387,12 +387,13 @@ check_grid_for_tile_match = function()
 						var _matches = global.block_grid[i][j].get_horizontal_matches();
 						if array_length(_matches) >= MIN_MATCH
 						{
-							// Flag matches for removal
+							var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
+							// Add points to matched blocks
 							for (var k = 0; k < array_length(_matches); k++)
 							{
 								var _xx = _matches[k].xx;
 								var _yy = _matches[k].yy;
-								_horizontal_match[_xx][_yy] = true;
+								_horizontal_match[_xx][_yy] = 10 + _additional_points;
 							}
 						}
 					}
@@ -402,12 +403,13 @@ check_grid_for_tile_match = function()
 						var _matches = global.block_grid[i][j].get_vertical_matches();
 						if array_length(_matches) >= MIN_MATCH
 						{
-							// Flag matches for removal
+							var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
+							// Add points to matched blocks
 							for (var k = 0; k < array_length(_matches); k++)
 							{
 								var _xx = _matches[k].xx;
 								var _yy = _matches[k].yy;
-								_vertical_match[_xx][_yy] = true;
+								_vertical_match[_xx][_yy] = 10 + _additional_points;
 							}
 						}
 					}
@@ -419,10 +421,12 @@ check_grid_for_tile_match = function()
 		{
 			for (var j = 0; j < array_length(global.block_grid[0]); j++)
 			{
-				if _horizontal_match[i][j] || _vertical_match[i][j]
+				if (_horizontal_match[i][j] > 0) || (_vertical_match[i][j] > 0)
 				{
+					// Remove block and add points
 					global.block_grid[i][j].change_state(BLOCK_STATE.EMPTY);
 					_match_found = true;
+					global.player_score += _horizontal_match[i][j] + _vertical_match[i][j];
 				}
 			}
 		}
