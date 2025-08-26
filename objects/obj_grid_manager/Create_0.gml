@@ -357,67 +357,105 @@ cluster =
 /// @desc Checks grid for any vertical or horizontal block matches of 3+ in a row
 check_grid_for_tile_match = function()
 {
-	// Arrays for flagging matches
-	var _horizontal_match = [];
-	for (var i = 0; i < array_length(global.block_grid); i++)
+	var _match_found = false;
+	do
 	{
-		for (var j = 0; j < array_length(global.block_grid[0]); j++)
-			_horizontal_match[i][j] = false;
-	}
-	var _vertical_match = [];
-	for (var i = 0; i < array_length(global.block_grid); i++)
-	{
-		for (var j = 0; j < array_length(global.block_grid[0]); j++)
-			_vertical_match[i][j] = false;
-	}
-	// Check for matches
-	for (var i = 0; i < array_length(global.block_grid); i++)
-	{
-		for (var j = 0; j < array_length(global.block_grid[0]); j++)
+		_match_found = false
+		// Arrays for flagging matches
+		var _horizontal_match = [];
+		for (var i = 0; i < array_length(global.block_grid); i++)
 		{
-			if global.block_grid[i][j].state != BLOCK_STATE.EMPTY
+			for (var j = 0; j < array_length(global.block_grid[0]); j++)
+				_horizontal_match[i][j] = false;
+		}
+		var _vertical_match = [];
+		for (var i = 0; i < array_length(global.block_grid); i++)
+		{
+			for (var j = 0; j < array_length(global.block_grid[0]); j++)
+				_vertical_match[i][j] = false;
+		}
+		// Check for matches
+		for (var i = 0; i < array_length(global.block_grid); i++)
+		{
+			for (var j = 0; j < array_length(global.block_grid[0]); j++)
 			{
-				// Check for horizontal match
-				if !_horizontal_match[i][j]
+				if global.block_grid[i][j].state != BLOCK_STATE.EMPTY
 				{
-					var _matches = global.block_grid[i][j].get_horizontal_matches();
-					if array_length(_matches) >= MIN_MATCH
+					// Check for horizontal match
+					if !_horizontal_match[i][j]
 					{
-						// Flag matches for removal
-						for (var k = 0; k < array_length(_matches); k++)
+						var _matches = global.block_grid[i][j].get_horizontal_matches();
+						if array_length(_matches) >= MIN_MATCH
 						{
-							var _xx = _matches[k].xx;
-							var _yy = _matches[k].yy;
-							_horizontal_match[_xx][_yy] = true;
+							// Flag matches for removal
+							for (var k = 0; k < array_length(_matches); k++)
+							{
+								var _xx = _matches[k].xx;
+								var _yy = _matches[k].yy;
+								_horizontal_match[_xx][_yy] = true;
+							}
 						}
 					}
-				}
-				// Check for vertical match
-				if !_vertical_match[i][j]
-				{
-					var _matches = global.block_grid[i][j].get_vertical_matches();
-					if array_length(_matches) >= MIN_MATCH
+					// Check for vertical match
+					if !_vertical_match[i][j]
 					{
-						// Flag matches for removal
-						for (var k = 0; k < array_length(_matches); k++)
+						var _matches = global.block_grid[i][j].get_vertical_matches();
+						if array_length(_matches) >= MIN_MATCH
 						{
-							var _xx = _matches[k].xx;
-							var _yy = _matches[k].yy;
-							_vertical_match[_xx][_yy] = true;
+							// Flag matches for removal
+							for (var k = 0; k < array_length(_matches); k++)
+							{
+								var _xx = _matches[k].xx;
+								var _yy = _matches[k].yy;
+								_vertical_match[_xx][_yy] = true;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
-	// Remove all matches
-	for (var i = 0; i < array_length(global.block_grid); i++)
-	{
-		for (var j = 0; j < array_length(global.block_grid[0]); j++)
+		// Remove all matches
+		for (var i = 0; i < array_length(global.block_grid); i++)
 		{
-			if _horizontal_match[i][j] || _vertical_match[i][j]
-				global.block_grid[i][j].change_state(BLOCK_STATE.EMPTY);
+			for (var j = 0; j < array_length(global.block_grid[0]); j++)
+			{
+				if _horizontal_match[i][j] || _vertical_match[i][j]
+				{
+					global.block_grid[i][j].change_state(BLOCK_STATE.EMPTY);
+					_match_found = true;
+				}
+			}
+		}
+		if (_match_found) fill_gaps();
+	}
+	until (!_match_found)
+}
+
+/// @func fill_gaps();
+/// @desc Moves blocks down to fill gaps after matches are removed
+fill_gaps = function()
+{
+	var _block_moved = false;
+	// Check grid for gaps and move blocks down to fill gaps
+	// Repeat until no gaps are found
+	do
+	{
+		_block_moved = false;
+		for (var i = 0; i < array_length(global.block_grid); i++)
+		{
+			for (var j = 0; j < array_length(global.block_grid[0]) - 1; j++)
+			{
+				if (global.block_grid[i][j].state != BLOCK_STATE.EMPTY) &&
+					(global.block_grid[i][j + 1].state == BLOCK_STATE.EMPTY)
+				{
+					global.block_grid[i][j + 1].change_state(
+						global.block_grid[i][j].state);
+					global.block_grid[i][j].change_state(BLOCK_STATE.EMPTY);
+					_block_moved = true;
+				}
+			}
 		}
 	}
+	until (!_block_moved)
 }
 #endregion

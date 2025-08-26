@@ -1,7 +1,7 @@
 /// @desc Define block variables and functions
 state = BLOCK_STATE.EMPTY;
 position = new vector2(0, 0);
-
+#region Functions
 /// @func change_state(_new_state);
 /// @param {Enum.BLOCK_STATE} _new_state The block's new state
 /// @desc Changes block's state
@@ -72,3 +72,4 @@ get_vertical_matches = function()
 	}
 	return _matches;
 }
+#endregion
