@@ -1,0 +1,1 @@
+draw_text(5, 5, $"Score: {global.player_score}");
