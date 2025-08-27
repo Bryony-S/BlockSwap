@@ -7,3 +7,15 @@ enum BLOCK_STATE
 	DIAMOND,
 	TRIANGLE
 }
+// Cluster type enum
+enum CLUSTER_TYPE
+{
+	BLOCK,
+	T_SHAPE,
+	L_SHAPE,
+	REVERSE_L_SHAPE,
+	LINE,
+	Z_SHAPE,
+	S_SHAPE,
+	NONE
+}

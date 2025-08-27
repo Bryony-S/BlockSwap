@@ -1,5 +1,8 @@
 /// @desc Define grid
 randomise();
+// Variables
+horizontal_movement_cooldown = 15;
+horizontal_movement_timer = horizontal_movement_cooldown;
 #region Create grid
 global.block_grid = [];
 var _block_size = sprite_get_width(spr_block_empty);
@@ -18,46 +21,14 @@ for (var i = 0; i < _grid_width; i++)
 	}
 }
 #endregion
-#region Define cluster
-// Cluster type enum
-enum CLUSTER_TYPE
-{
-	BLOCK,
-	T_SHAPE,
-	L_SHAPE,
-	REVERSE_L_SHAPE,
-	LINE,
-	Z_SHAPE,
-	S_SHAPE,
-	NONE
-}
-#region Define cluster point
-/// @func point(_x, _y);
-/// @param {Real} _x The x co-ordinate of the cluster point
-/// @param {Real} _y The y co-ordinate of the cluster point
-/// @desc Represents one block point in the cluster
-function point() constructor
-{
-	position = new vector2(0, 0);
-	block_shape = choose(BLOCK_STATE.CIRCLE, BLOCK_STATE.DIAMOND,
-		BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE);
-	
-	change_point = function(_x, _y)
-	{
-		position.xx = _x;
-		position.yy = _y;
-		block_shape = choose(BLOCK_STATE.CIRCLE, BLOCK_STATE.DIAMOND,
-			BLOCK_STATE.SQUARE, BLOCK_STATE.TRIANGLE);
-	}
-}
-#endregion
-#region Define cluster
 cluster =
 {
 	block_points : [new point(), new point(), new point(), new point()],
 	shape_type : CLUSTER_TYPE.NONE,
-	normal_timer : 30,
-	current_timer : 30,
+	normal_fall_timer : 40,
+	fast_fall_timer : 10,
+	current_fall_timer : 40,
+	is_falling_faster : false,
 	
 	/// @func create_new_shape_points(_shape_type, _start_x, _start_y);
 	/// @param {Enum.CLUSTER_TYPE} _shape_type The shape of the cluster
@@ -153,7 +124,9 @@ cluster =
 	/// @desc Cluster falls by 1 block
 	fall : function()
 	{
-		current_timer = normal_timer;
+		// Reset fall timer
+		current_fall_timer = normal_fall_timer;
+		if (is_falling_faster) current_fall_timer = fast_fall_timer;
 		// No cluster, so generate new one at top of grid
 		if shape_type == CLUSTER_TYPE.NONE
 		{
@@ -195,6 +168,22 @@ cluster =
 					block_points[i].position.yy++;
 				generate_cluster_in_grid();
 			}
+		}
+	},
+	
+	/// @func fall_faster(_is_faster);
+	/// @param {Bool} _is_faster True if cluster should fall faster, false if not
+	fall_faster : function(_is_faster)
+	{
+		if _is_faster
+		{
+			is_falling_faster = true;
+			fall();
+		}
+		else
+		{
+			is_falling_faster = false;
+			current_fall_timer = normal_fall_timer;
 		}
 	},
 	
@@ -350,8 +339,6 @@ cluster =
 		return _is_space;
 	}
 };
-#endregion
-#endregion
 #region Grid functions
 /// @func check_grid_for_tile_match();
 /// @desc Checks grid for any vertical or horizontal block matches of 3+ in a row
