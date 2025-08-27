@@ -90,10 +90,23 @@ next_cluster =
 		}
 	},
 	
+	/// @func clear_cluster_from_grid();
+	/// @desc Clears cluster from grid
+	clear_cluster_from_grid : function()
+	{
+		for (var i = 0; i < array_length(block_points); i++)
+		{
+			var _x = block_points[i].position.xx;
+			var _y = block_points[i].position.yy;
+			obj_game_manager.preview_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
+		}
+	},
+	
 	/// @func create_next_cluster();
 	/// @desc Generates next cluster to drop
 	create_next_cluster : function()
 	{
+		clear_cluster_from_grid();
 		shape_type = choose(CLUSTER_TYPE.BLOCK, CLUSTER_TYPE.LINE,
 		CLUSTER_TYPE.L_SHAPE, CLUSTER_TYPE.REVERSE_L_SHAPE, CLUSTER_TYPE.S_SHAPE,
 		CLUSTER_TYPE.T_SHAPE, CLUSTER_TYPE.Z_SHAPE);

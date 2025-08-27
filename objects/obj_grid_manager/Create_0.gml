@@ -30,60 +30,6 @@ cluster =
 	current_fall_timer : 40,
 	is_falling_faster : false,
 	
-	/// @func create_new_shape_points(_shape_type, _start_x, _start_y);
-	/// @param {Enum.CLUSTER_TYPE} _shape_type The shape of the cluster
-	/// @param {Real} _start_x The grid x point of the top-left corner of the shape
-	/// @param {Real} _start_y The grid y point of the top-left corner of the shape
-	/// @desc Clears block points and creates a new cluster shape
-	create_new_shape_points : function(_shape_type, _start_x, _start_y)
-	{
-		switch (_shape_type)
-		{
-			case CLUSTER_TYPE.BLOCK:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x, _start_y + 1);
-				block_points[3].change_point(_start_x + 1, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.LINE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x + 3, _start_y);
-				break;
-			case CLUSTER_TYPE.L_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.REVERSE_L_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x + 2, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.S_SHAPE:
-				block_points[0].change_point(_start_x, _start_y + 1);
-				block_points[1].change_point(_start_x + 1, _start_y + 1);
-				block_points[2].change_point(_start_x + 1, _start_y);
-				block_points[3].change_point(_start_x + 2, _start_y);
-				break;
-			case CLUSTER_TYPE.T_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x + 1, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.Z_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 1, _start_y + 1);
-				block_points[3].change_point(_start_x + 2, _start_y + 1);
-				break;
-		}
-	},
-	
 	/// @func generate_cluster_in_grid();
 	/// @desc Creates cluster in grid
 	generate_cluster_in_grid : function()
@@ -108,16 +54,22 @@ cluster =
 		}
 	},
 	
-	/// @func create_new_cluster();
-	/// @desc Creates a new cluster of blocks
-	create_new_cluster : function()
+	/// @func get_next_cluster();
+	/// @desc Gets next cluster from preview
+	get_next_cluster : function()
 	{
-		shape_type = choose(CLUSTER_TYPE.BLOCK, CLUSTER_TYPE.LINE,
-		CLUSTER_TYPE.L_SHAPE, CLUSTER_TYPE.REVERSE_L_SHAPE, CLUSTER_TYPE.S_SHAPE,
-		CLUSTER_TYPE.T_SHAPE, CLUSTER_TYPE.Z_SHAPE);
-		create_new_shape_points(shape_type,
-			irandom(array_length(global.block_grid) - 4), 0);
+		shape_type = obj_game_manager.next_cluster.shape_type;
+		for (var i = 0; i < array_length(block_points); i++)
+		{
+			block_points[i].position.xx =
+				obj_game_manager.next_cluster.block_points[i].position.xx;
+			block_points[i].position.yy =
+				obj_game_manager.next_cluster.block_points[i].position.yy;
+			block_points[i].block_shape =
+				obj_game_manager.next_cluster.block_points[i].block_shape;
+		}
 		generate_cluster_in_grid();
+		obj_game_manager.next_cluster.create_next_cluster();
 	},
 	
 	/// @func fall();
@@ -130,7 +82,7 @@ cluster =
 		// No cluster, so generate new one at top of grid
 		if shape_type == CLUSTER_TYPE.NONE
 		{
-			create_new_cluster();
+			get_next_cluster();
 		}
 		else
 		{
