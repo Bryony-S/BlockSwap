@@ -20,9 +20,43 @@ for (var i = 0; i < _grid_width; i++)
 			position.xx = i;
 			position.yy = j;
 		}
+		preview_grid[i][j].parent_grid = preview_grid;
 	}
 }
 #endregion
+/// @func check_cluster_for_tile_match();
+/// @return {Bool} Returns true if at least one match was found, false if none
+/// @desc Checks cluster for any vertical or horizontal block matches of 3+ in a row
+check_cluster_for_tile_match = function()
+{
+	var _match_found = false;
+	// Check for matches
+	for (var i = 0; i < array_length(preview_grid); i++)
+	{
+		for (var j = 0; j < array_length(preview_grid[0]); j++)
+		{
+			if preview_grid[i][j].state != BLOCK_STATE.EMPTY
+			{
+				// Check for horizontal match
+				var _matches = preview_grid[i][j].get_horizontal_matches();
+				if array_length(_matches) >= MIN_MATCH
+				{
+					_match_found = true;
+					break;
+				}
+				// Check for vertical match
+				_matches = preview_grid[i][j].get_vertical_matches();
+				if array_length(_matches) >= MIN_MATCH
+				{
+					_match_found = true;
+					break;
+				}
+			}
+		}
+		if (_match_found) break;
+	}
+	return _match_found;
+}
 function preview_cluster(_grid) : cluster(_grid) constructor
 {	
 	/// @func create_new_shape_points(_shape_type, _start_x, _start_y);
@@ -32,63 +66,67 @@ function preview_cluster(_grid) : cluster(_grid) constructor
 	/// @desc Clears block points and creates a new cluster shape
 	create_new_shape_points = function(_shape_type, _start_x, _start_y)
 	{
-		switch (_shape_type)
+		do
 		{
-			case CLUSTER_TYPE.BLOCK:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x, _start_y + 1);
-				block_points[3].change_point(_start_x + 1, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.LINE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x + 3, _start_y);
-				break;
-			case CLUSTER_TYPE.L_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.REVERSE_L_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x + 2, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.S_SHAPE:
-				block_points[0].change_point(_start_x, _start_y + 1);
-				block_points[1].change_point(_start_x + 1, _start_y + 1);
-				block_points[2].change_point(_start_x + 1, _start_y);
-				block_points[3].change_point(_start_x + 2, _start_y);
-				break;
-			case CLUSTER_TYPE.T_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 2, _start_y);
-				block_points[3].change_point(_start_x + 1, _start_y + 1);
-				break;
-			case CLUSTER_TYPE.Z_SHAPE:
-				block_points[0].change_point(_start_x, _start_y);
-				block_points[1].change_point(_start_x + 1, _start_y);
-				block_points[2].change_point(_start_x + 1, _start_y + 1);
-				block_points[3].change_point(_start_x + 2, _start_y + 1);
-				break;
+			clear_cluster_from_grid();
+			switch (_shape_type)
+			{
+				case CLUSTER_TYPE.BLOCK:
+					block_points[0].change_point(_start_x, _start_y);
+					block_points[1].change_point(_start_x + 1, _start_y);
+					block_points[2].change_point(_start_x, _start_y + 1);
+					block_points[3].change_point(_start_x + 1, _start_y + 1);
+					break;
+				case CLUSTER_TYPE.LINE:
+					block_points[0].change_point(_start_x, _start_y);
+					block_points[1].change_point(_start_x + 1, _start_y);
+					block_points[2].change_point(_start_x + 2, _start_y);
+					block_points[3].change_point(_start_x + 3, _start_y);
+					break;
+				case CLUSTER_TYPE.L_SHAPE:
+					block_points[0].change_point(_start_x, _start_y);
+					block_points[1].change_point(_start_x + 1, _start_y);
+					block_points[2].change_point(_start_x + 2, _start_y);
+					block_points[3].change_point(_start_x, _start_y + 1);
+					break;
+				case CLUSTER_TYPE.REVERSE_L_SHAPE:
+					block_points[0].change_point(_start_x, _start_y);
+					block_points[1].change_point(_start_x + 1, _start_y);
+					block_points[2].change_point(_start_x + 2, _start_y);
+					block_points[3].change_point(_start_x + 2, _start_y + 1);
+					break;
+				case CLUSTER_TYPE.S_SHAPE:
+					block_points[0].change_point(_start_x, _start_y + 1);
+					block_points[1].change_point(_start_x + 1, _start_y + 1);
+					block_points[2].change_point(_start_x + 1, _start_y);
+					block_points[3].change_point(_start_x + 2, _start_y);
+					break;
+				case CLUSTER_TYPE.T_SHAPE:
+					block_points[0].change_point(_start_x, _start_y);
+					block_points[1].change_point(_start_x + 1, _start_y);
+					block_points[2].change_point(_start_x + 2, _start_y);
+					block_points[3].change_point(_start_x + 1, _start_y + 1);
+					break;
+				case CLUSTER_TYPE.Z_SHAPE:
+					block_points[0].change_point(_start_x, _start_y);
+					block_points[1].change_point(_start_x + 1, _start_y);
+					block_points[2].change_point(_start_x + 1, _start_y + 1);
+					block_points[3].change_point(_start_x + 2, _start_y + 1);
+					break;
+			}
+			generate_cluster_in_grid();
 		}
+		until (!obj_game_manager.check_cluster_for_tile_match())
 	}
 		
 	/// @func create_next_cluster();
 	/// @desc Generates next cluster to drop
 	create_next_cluster = function()
 	{
-		clear_cluster_from_grid();
 		shape_type = choose(CLUSTER_TYPE.BLOCK, CLUSTER_TYPE.LINE,
 		CLUSTER_TYPE.L_SHAPE, CLUSTER_TYPE.REVERSE_L_SHAPE, CLUSTER_TYPE.S_SHAPE,
 		CLUSTER_TYPE.T_SHAPE, CLUSTER_TYPE.Z_SHAPE);
 		create_new_shape_points(shape_type, 1, 1);
-		generate_cluster_in_grid();
 	}
 }
 next_cluster = new preview_cluster(preview_grid);
