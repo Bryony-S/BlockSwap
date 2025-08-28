@@ -1,7 +1,6 @@
 /// @desc Start game
 draw_set_font(fnt_main);
 global.player_score = 0;
-instance_create_layer(0, 0, layer, obj_grid_manager);
 #region Create preview grid
 preview_grid = [];
 var _block_size = sprite_get_width(spr_block_empty);
@@ -15,8 +14,11 @@ for (var i = 0; i < _grid_width; i++)
 	{
 		preview_grid[i][j] = instance_create_layer(_start_x + (_block_size * i),
 			_start_y + (_block_size * j), layer, obj_block);
-		preview_grid[i][j].position.xx	= i;
-		preview_grid[i][j].position.yy	= j;
+		with (preview_grid[i][j])
+		{
+			position.xx = i;
+			position.yy = j;
+		}
 	}
 }
 #endregion
@@ -90,3 +92,4 @@ function preview_cluster(_grid) : cluster(_grid) constructor
 }
 next_cluster = new preview_cluster(preview_grid);
 next_cluster.create_next_cluster();
+instance_create_layer(0, 0, layer, obj_grid_manager);

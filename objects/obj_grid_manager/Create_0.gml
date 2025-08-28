@@ -4,7 +4,7 @@ randomise();
 horizontal_movement_cooldown = 15;
 horizontal_movement_timer = horizontal_movement_cooldown;
 #region Create grid
-global.block_grid = [];
+game_grid = [];
 var _block_size = sprite_get_width(spr_block_empty);
 var _grid_width = 8;
 var _grid_height = 16;
@@ -14,74 +14,43 @@ for (var i = 0; i < _grid_width; i++)
 {
 	for (var j = 0; j < _grid_height; j++)
 	{
-		global.block_grid[i][j] = instance_create_layer(_start_x + (_block_size * i),
+		game_grid[i][j] = instance_create_layer(_start_x + (_block_size * i),
 			_start_y + (_block_size * j), layer, obj_block);
-		global.block_grid[i][j].position.xx	= i;
-		global.block_grid[i][j].position.yy	= j;
+		with (game_grid[i][j])
+		{
+			position.xx = i;
+			position.yy = j;
+		}
+		game_grid[i][j].parent_grid = game_grid;
 	}
 }
 #endregion
-current_cluster =
+function game_cluster(_grid, _cluster_source) : cluster(_grid) constructor
 {
-	block_points : [new point(), new point(), new point(), new point()],
-	shape_type : CLUSTER_TYPE.NONE,
-	normal_fall_timer : 40,
-	fast_fall_timer : 10,
-	current_fall_timer : 40,
-	is_falling_faster : false,
-	
-	/// @func generate_cluster_in_grid();
-	/// @desc Creates cluster in grid
-	generate_cluster_in_grid : function()
-	{
-		for (var i = 0; i < array_length(block_points); i++)
-		{
-			var _x = block_points[i].position.xx;
-			var _y = block_points[i].position.yy;
-			if (global.block_grid[_x, _y].state) == BLOCK_STATE.EMPTY
-			{
-				global.block_grid[_x, _y].change_state(block_points[i].block_shape);
-			}
-			else // Game over
-			{
-				room_restart();
-			}
-		}
-	},
-	
-	/// @func clear_cluster_from_grid();
-	/// @desc Clears cluster from grid
-	clear_cluster_from_grid : function()
-	{
-		for (var i = 0; i < array_length(block_points); i++)
-		{
-			var _x = block_points[i].position.xx;
-			var _y = block_points[i].position.yy;
-			global.block_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
-		}
-	},
+	normal_fall_timer = 40
+	fast_fall_timer = 10
+	current_fall_timer = 40
+	is_falling_faster = false
+	cluster_source = _cluster_source;
 	
 	/// @func get_next_cluster();
 	/// @desc Gets next cluster from preview
-	get_next_cluster : function()
+	get_next_cluster = function()
 	{
-		shape_type = obj_game_manager.next_cluster.shape_type;
+		shape_type = cluster_source.shape_type;
 		for (var i = 0; i < array_length(block_points); i++)
 		{
-			block_points[i].position.xx =
-				obj_game_manager.next_cluster.block_points[i].position.xx;
-			block_points[i].position.yy =
-				obj_game_manager.next_cluster.block_points[i].position.yy;
-			block_points[i].block_shape =
-				obj_game_manager.next_cluster.block_points[i].block_shape;
+			block_points[i].position.xx = cluster_source.block_points[i].position.xx;
+			block_points[i].position.yy = cluster_source.block_points[i].position.yy;
+			block_points[i].block_shape = cluster_source.block_points[i].block_shape;
 		}
 		generate_cluster_in_grid();
-		obj_game_manager.next_cluster.create_next_cluster();
-	},
+		cluster_source.create_next_cluster();
+	}
 	
 	/// @func fall();
 	/// @desc Cluster falls by 1 block
-	fall : function()
+	fall = function()
 	{
 		// Reset fall timer
 		current_fall_timer = normal_fall_timer;
@@ -100,12 +69,12 @@ current_cluster =
 			{
 				var _x = block_points[i].position.xx;
 				var _y = block_points[i].position.yy;
-				if (_y + 1) >= array_length(global.block_grid[0])
+				if (_y + 1) >= array_length(block_grid[0])
 				{
 					_is_space = false;
 					break;
 				}
-				else if global.block_grid[_x, _y + 1].state != BLOCK_STATE.EMPTY
+				else if block_grid[_x, _y + 1].state != BLOCK_STATE.EMPTY
 				{
 					_is_space = false;
 					break;
@@ -128,11 +97,11 @@ current_cluster =
 				generate_cluster_in_grid();
 			}
 		}
-	},
+	}
 	
 	/// @func fall_faster(_is_faster);
 	/// @param {Bool} _is_faster True if cluster should fall faster, false if not
-	fall_faster : function(_is_faster)
+	fall_faster = function(_is_faster)
 	{
 		if _is_faster
 		{
@@ -144,12 +113,12 @@ current_cluster =
 			is_falling_faster = false;
 			current_fall_timer = normal_fall_timer;
 		}
-	},
+	}
 	
 	/// @func move_horizontally(_dir);
 	/// @param {Real} _dir The direction for the cluster to move in horizontally
 	/// @desc Cluster moves 1 block left or right
-	move_horizontally : function(_dir)
+	move_horizontally = function(_dir)
 	{
 		if shape_type != CLUSTER_TYPE.NONE
 		{
@@ -160,12 +129,12 @@ current_cluster =
 			{
 				var _new_x = block_points[i].position.xx + _dir;
 				var _y = block_points[i].position.yy;
-				if (_new_x >= array_length(global.block_grid)) || (_new_x < 0)
+				if (_new_x >= array_length(block_grid)) || (_new_x < 0)
 				{
 					_is_space = false;
 					break;
 				}
-				else if global.block_grid[_new_x, _y].state != BLOCK_STATE.EMPTY
+				else if block_grid[_new_x, _y].state != BLOCK_STATE.EMPTY
 				{
 					_is_space = false;
 					break;
@@ -177,12 +146,12 @@ current_cluster =
 			// Regenerate cluster
 			generate_cluster_in_grid();
 		}
-	},
+	}
 	
 	/// @func rotate(_dir);
 	/// @param {Real} _dir The direction the cluster is rotating
 	/// @desc Cluster rotates 90 degrees clockwise or anti-clockwise
-	rotate : function(_dir)
+	rotate = function(_dir)
 	{
 		if shape_type != CLUSTER_TYPE.NONE
 		{
@@ -227,14 +196,14 @@ current_cluster =
 			// Regenerate cluster
 			generate_cluster_in_grid();
 		}
-	},
+	}
 	
 	/// @func try_rotate_cluster(_origin_index, _rotation_angle);
 	/// @param {Real} _origin_index The index of the block point that will be used as the origin of rotation
 	/// @param {Real} _rotation_angle The angle at which the cluster will be rotated (either 90 or -90 degrees)
 	/// @return {Bool} True if rotation was successful, false if not
 	/// @desc Attempts to rotate a cluster
-	try_rotate_cluster : function(_origin_index, _rotation_angle)
+	try_rotate_cluster = function(_origin_index, _rotation_angle)
 	{
 		// Calculate new points for each block in cluster
 		var _new_points = [new vector2(0, 0), new vector2(0, 0), new vector2(0, 0),
@@ -272,9 +241,9 @@ current_cluster =
 			if i != _origin_index
 			{
 				if (_new_points[i].xx < 0) || (_new_points[i].yy < 0) ||
-					(_new_points[i].xx >= array_length(global.block_grid)) ||
-					(_new_points[i].yy >= array_length(global.block_grid[0])) ||
-					(global.block_grid[_new_points[i].xx, _new_points[i].yy].state !=
+					(_new_points[i].xx >= array_length(block_grid)) ||
+					(_new_points[i].yy >= array_length(block_grid[0])) ||
+					(block_grid[_new_points[i].xx, _new_points[i].yy].state !=
 					BLOCK_STATE.EMPTY)
 				{
 					_is_space = false;
@@ -297,7 +266,8 @@ current_cluster =
 		}
 		return _is_space;
 	}
-};
+}
+current_cluster = new game_cluster(game_grid, obj_game_manager.next_cluster);
 #region Grid functions
 /// @func check_grid_for_tile_match();
 /// @desc Checks grid for any vertical or horizontal block matches of 3+ in a row
@@ -309,28 +279,28 @@ check_grid_for_tile_match = function()
 		_match_found = false
 		// Arrays for flagging matches
 		var _horizontal_match = [];
-		for (var i = 0; i < array_length(global.block_grid); i++)
+		for (var i = 0; i < array_length(game_grid); i++)
 		{
-			for (var j = 0; j < array_length(global.block_grid[0]); j++)
+			for (var j = 0; j < array_length(game_grid[0]); j++)
 				_horizontal_match[i][j] = 0;
 		}
 		var _vertical_match = [];
-		for (var i = 0; i < array_length(global.block_grid); i++)
+		for (var i = 0; i < array_length(game_grid); i++)
 		{
-			for (var j = 0; j < array_length(global.block_grid[0]); j++)
+			for (var j = 0; j < array_length(game_grid[0]); j++)
 				_vertical_match[i][j] = 0;
 		}
 		// Check for matches
-		for (var i = 0; i < array_length(global.block_grid); i++)
+		for (var i = 0; i < array_length(game_grid); i++)
 		{
-			for (var j = 0; j < array_length(global.block_grid[0]); j++)
+			for (var j = 0; j < array_length(game_grid[0]); j++)
 			{
-				if global.block_grid[i][j].state != BLOCK_STATE.EMPTY
+				if game_grid[i][j].state != BLOCK_STATE.EMPTY
 				{
 					// Check for horizontal match
 					if !_horizontal_match[i][j]
 					{
-						var _matches = global.block_grid[i][j].get_horizontal_matches();
+						var _matches = game_grid[i][j].get_horizontal_matches();
 						if array_length(_matches) >= MIN_MATCH
 						{
 							var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
@@ -346,7 +316,7 @@ check_grid_for_tile_match = function()
 					// Check for vertical match
 					if !_vertical_match[i][j]
 					{
-						var _matches = global.block_grid[i][j].get_vertical_matches();
+						var _matches = game_grid[i][j].get_vertical_matches();
 						if array_length(_matches) >= MIN_MATCH
 						{
 							var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
@@ -363,14 +333,14 @@ check_grid_for_tile_match = function()
 			}
 		}
 		// Remove all matches
-		for (var i = 0; i < array_length(global.block_grid); i++)
+		for (var i = 0; i < array_length(game_grid); i++)
 		{
-			for (var j = 0; j < array_length(global.block_grid[0]); j++)
+			for (var j = 0; j < array_length(game_grid[0]); j++)
 			{
 				if (_horizontal_match[i][j] > 0) || (_vertical_match[i][j] > 0)
 				{
 					// Remove block and add points
-					global.block_grid[i][j].change_state(BLOCK_STATE.EMPTY);
+					game_grid[i][j].change_state(BLOCK_STATE.EMPTY);
 					_match_found = true;
 					global.player_score += _horizontal_match[i][j] + _vertical_match[i][j];
 				}
@@ -391,16 +361,15 @@ fill_gaps = function()
 	do
 	{
 		_block_moved = false;
-		for (var i = 0; i < array_length(global.block_grid); i++)
+		for (var i = 0; i < array_length(game_grid); i++)
 		{
-			for (var j = 0; j < array_length(global.block_grid[0]) - 1; j++)
+			for (var j = 0; j < array_length(game_grid[0]) - 1; j++)
 			{
-				if (global.block_grid[i][j].state != BLOCK_STATE.EMPTY) &&
-					(global.block_grid[i][j + 1].state == BLOCK_STATE.EMPTY)
+				if (game_grid[i][j].state != BLOCK_STATE.EMPTY) &&
+					(game_grid[i][j + 1].state == BLOCK_STATE.EMPTY)
 				{
-					global.block_grid[i][j + 1].change_state(
-						global.block_grid[i][j].state);
-					global.block_grid[i][j].change_state(BLOCK_STATE.EMPTY);
+					game_grid[i][j + 1].change_state(game_grid[i][j].state);
+					game_grid[i][j].change_state(BLOCK_STATE.EMPTY);
 					_block_moved = true;
 				}
 			}

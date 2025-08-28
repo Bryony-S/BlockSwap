@@ -47,7 +47,14 @@ function cluster(_grid) constructor
 		{
 			var _x = block_points[i].position.xx;
 			var _y = block_points[i].position.yy;
-			block_grid[_x, _y].change_state(block_points[i].block_shape);
+			if (block_grid[_x, _y].state) == BLOCK_STATE.EMPTY
+			{
+				block_grid[_x, _y].change_state(block_points[i].block_shape);
+			}
+			else // Game over
+			{
+				room_restart();
+			}
 		}
 	}
 	

@@ -1,6 +1,7 @@
 /// @desc Define block variables and functions
 state = BLOCK_STATE.EMPTY;
 position = new vector2(0, 0);
+parent_grid = [];
 #region Functions
 /// @func change_state(_new_state);
 /// @param {Enum.BLOCK_STATE} _new_state The block's new state
@@ -36,11 +37,11 @@ get_horizontal_matches = function()
 {
 	var _matches = [position];
 	// Check for matches to the right
-	if position.xx <= (array_length(global.block_grid) - MIN_MATCH)
+	if position.xx <= (array_length(parent_grid) - MIN_MATCH)
 	{
-		for (var i = position.xx + 1; i < array_length(global.block_grid); i++)
+		for (var i = position.xx + 1; i < array_length(parent_grid); i++)
 		{
-			var _block = global.block_grid[i][position.yy];
+			var _block = parent_grid[i][position.yy];
 			if _block.state == state
 			{
 				array_push(_matches, _block.position);
@@ -58,11 +59,11 @@ get_vertical_matches = function()
 {
 	var _matches = [position];
 	// Check for matches going down
-	if position.yy <= (array_length(global.block_grid[0]) - MIN_MATCH)
+	if position.yy <= (array_length(parent_grid[0]) - MIN_MATCH)
 	{
-		for (var i = position.yy + 1; i < array_length(global.block_grid[0]); i++)
+		for (var i = position.yy + 1; i < array_length(parent_grid[0]); i++)
 		{
-			var _block = global.block_grid[position.xx][i];
+			var _block = parent_grid[position.xx][i];
 			if _block.state == state
 			{
 				array_push(_matches, _block.position);
