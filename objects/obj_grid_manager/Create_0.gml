@@ -3,6 +3,8 @@ randomise();
 // Variables
 horizontal_movement_cooldown = 15;
 horizontal_movement_timer = horizontal_movement_cooldown;
+match_found_wait_time = 15;
+waiting = false;
 #region Create grid
 game_grid = [];
 var _block_size = sprite_get_width(spr_block_empty);
@@ -274,81 +276,81 @@ current_cluster = new game_cluster(game_grid, obj_game_manager.next_cluster);
 check_grid_for_tile_match = function()
 {
 	var _match_found = false;
-	do
+	// Arrays for flagging matches
+	var _horizontal_match = [];
+	for (var i = 0; i < array_length(game_grid); i++)
 	{
-		_match_found = false
-		// Arrays for flagging matches
-		var _horizontal_match = [];
-		for (var i = 0; i < array_length(game_grid); i++)
-		{
-			for (var j = 0; j < array_length(game_grid[0]); j++)
-				_horizontal_match[i][j] = 0;
-		}
-		var _vertical_match = [];
-		for (var i = 0; i < array_length(game_grid); i++)
-		{
-			for (var j = 0; j < array_length(game_grid[0]); j++)
-				_vertical_match[i][j] = 0;
-		}
-		// Check for matches
-		for (var i = 0; i < array_length(game_grid); i++)
-		{
-			for (var j = 0; j < array_length(game_grid[0]); j++)
-			{
-				if game_grid[i][j].state != BLOCK_STATE.EMPTY
-				{
-					// Check for horizontal match
-					if !_horizontal_match[i][j]
-					{
-						var _matches = game_grid[i][j].get_horizontal_matches();
-						if array_length(_matches) >= MIN_MATCH
-						{
-							var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
-							// Add points to matched blocks
-							for (var k = 0; k < array_length(_matches); k++)
-							{
-								var _xx = _matches[k].xx;
-								var _yy = _matches[k].yy;
-								_horizontal_match[_xx][_yy] = 10 + _additional_points;
-							}
-						}
-					}
-					// Check for vertical match
-					if !_vertical_match[i][j]
-					{
-						var _matches = game_grid[i][j].get_vertical_matches();
-						if array_length(_matches) >= MIN_MATCH
-						{
-							var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
-							// Add points to matched blocks
-							for (var k = 0; k < array_length(_matches); k++)
-							{
-								var _xx = _matches[k].xx;
-								var _yy = _matches[k].yy;
-								_vertical_match[_xx][_yy] = 10 + _additional_points;
-							}
-						}
-					}
-				}
-			}
-		}
-		// Remove all matches
-		for (var i = 0; i < array_length(game_grid); i++)
-		{
-			for (var j = 0; j < array_length(game_grid[0]); j++)
-			{
-				if (_horizontal_match[i][j] > 0) || (_vertical_match[i][j] > 0)
-				{
-					// Remove block and add points
-					game_grid[i][j].explode();
-					_match_found = true;
-					global.player_score += _horizontal_match[i][j] + _vertical_match[i][j];
-				}
-			}
-		}
-		if (_match_found) fill_gaps();
+		for (var j = 0; j < array_length(game_grid[0]); j++)
+			_horizontal_match[i][j] = 0;
 	}
-	until (!_match_found)
+	var _vertical_match = [];
+	for (var i = 0; i < array_length(game_grid); i++)
+	{
+		for (var j = 0; j < array_length(game_grid[0]); j++)
+			_vertical_match[i][j] = 0;
+	}
+	// Check for matches
+	for (var i = 0; i < array_length(game_grid); i++)
+	{
+		for (var j = 0; j < array_length(game_grid[0]); j++)
+		{
+			if game_grid[i][j].state != BLOCK_STATE.EMPTY
+			{
+				// Check for horizontal match
+				if !_horizontal_match[i][j]
+				{
+					var _matches = game_grid[i][j].get_horizontal_matches();
+					if array_length(_matches) >= MIN_MATCH
+					{
+						var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
+						// Add points to matched blocks
+						for (var k = 0; k < array_length(_matches); k++)
+						{
+							var _xx = _matches[k].xx;
+							var _yy = _matches[k].yy;
+							_horizontal_match[_xx][_yy] = 10 + _additional_points;
+						}
+					}
+				}
+				// Check for vertical match
+				if !_vertical_match[i][j]
+				{
+					var _matches = game_grid[i][j].get_vertical_matches();
+					if array_length(_matches) >= MIN_MATCH
+					{
+						var _additional_points = 5 * (array_length(_matches) - MIN_MATCH);
+						// Add points to matched blocks
+						for (var k = 0; k < array_length(_matches); k++)
+						{
+							var _xx = _matches[k].xx;
+							var _yy = _matches[k].yy;
+							_vertical_match[_xx][_yy] = 10 + _additional_points;
+						}
+					}
+				}
+			}
+		}
+	}
+	// Remove all matches
+	for (var i = 0; i < array_length(game_grid); i++)
+	{
+		for (var j = 0; j < array_length(game_grid[0]); j++)
+		{
+			if (_horizontal_match[i][j] > 0) || (_vertical_match[i][j] > 0)
+			{
+				// Remove block and add points
+				game_grid[i][j].explode();
+				_match_found = true;
+				global.player_score += _horizontal_match[i][j] + _vertical_match[i][j];
+			}
+		}
+	}
+	if _match_found
+	{
+		// Play match found animation and pause player control temporarily
+		alarm[0] = match_found_wait_time;
+		waiting = true;
+	}
 }
 
 /// @func fill_gaps();
