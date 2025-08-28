@@ -1,7 +1,29 @@
 /// @desc Define block variables and functions
+// Variables
 state = BLOCK_STATE.EMPTY;
 position = new vector2(0, 0);
 parent_grid = [];
+#region Explosion particle system
+explosion_ps = part_system_create();
+part_system_draw_order(explosion_ps, true);
+part_system_position(explosion_ps, x, y);
+// Explosion part type
+explosion_pt = part_type_create();
+part_type_shape(explosion_pt, pt_shape_spark);
+part_type_size(explosion_pt, 0.1, 0.05, 0, 0);
+part_type_scale(explosion_pt, 1, 1.3);
+part_type_speed(explosion_pt, 1, 1, 0.01, 0);
+part_type_direction(explosion_pt, 0, 360, 0, 0);
+part_type_gravity(explosion_pt, 0, 270);
+part_type_orientation(explosion_pt, 0, 0, 0, 0, false);
+part_type_colour3(explosion_pt, $FFFFFF, $639999, $2BCFFF);
+part_type_alpha3(explosion_pt, 1, 1, 0);
+part_type_blend(explosion_pt, false);
+part_type_life(explosion_pt, 15, 30);
+// Explosion particle emitter
+explosion_pemit = part_emitter_create(explosion_ps);
+part_emitter_region(explosion_ps, explosion_pemit, -8, 8, -8, 8, ps_shape_ellipse, ps_distr_gaussian);
+#endregion
 #region Functions
 /// @func change_state(_new_state);
 /// @param {Enum.BLOCK_STATE} _new_state The block's new state
@@ -72,5 +94,13 @@ get_vertical_matches = function()
 		}
 	}
 	return _matches;
+}
+
+/// @func explode();
+/// @desc Blocks explodes and goes back to empty
+explode = function()
+{
+	change_state(BLOCK_STATE.EMPTY);
+	part_emitter_burst(explosion_ps, explosion_pemit, explosion_pt, 50);
 }
 #endregion
