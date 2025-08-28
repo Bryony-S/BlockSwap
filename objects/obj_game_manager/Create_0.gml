@@ -20,17 +20,14 @@ for (var i = 0; i < _grid_width; i++)
 	}
 }
 #endregion
-next_cluster =
-{
-	block_points : [new point(), new point(), new point(), new point()],
-	shape_type : CLUSTER_TYPE.NONE,
-	
+function preview_cluster(_grid) : cluster(_grid) constructor
+{	
 	/// @func create_new_shape_points(_shape_type, _start_x, _start_y);
 	/// @param {Enum.CLUSTER_TYPE} _shape_type The shape of the cluster
 	/// @param {Real} _start_x The grid x point of the top-left corner of the shape
 	/// @param {Real} _start_y The grid y point of the top-left corner of the shape
 	/// @desc Clears block points and creates a new cluster shape
-	create_new_shape_points : function(_shape_type, _start_x, _start_y)
+	create_new_shape_points = function(_shape_type, _start_x, _start_y)
 	{
 		switch (_shape_type)
 		{
@@ -77,35 +74,11 @@ next_cluster =
 				block_points[3].change_point(_start_x + 2, _start_y + 1);
 				break;
 		}
-	},
-	
-	/// @func generate_cluster_in_grid();
-	/// @desc Creates cluster in grid
-	generate_cluster_in_grid : function()
-	{
-		for (var i = 0; i < array_length(block_points); i++)
-		{
-			var _x = block_points[i].position.xx;
-			var _y = block_points[i].position.yy;
-			obj_game_manager.preview_grid[_x, _y].change_state(block_points[i].block_shape);
-		}
-	},
-	
-	/// @func clear_cluster_from_grid();
-	/// @desc Clears cluster from grid
-	clear_cluster_from_grid : function()
-	{
-		for (var i = 0; i < array_length(block_points); i++)
-		{
-			var _x = block_points[i].position.xx;
-			var _y = block_points[i].position.yy;
-			obj_game_manager.preview_grid[_x, _y].change_state(BLOCK_STATE.EMPTY);
-		}
-	},
-	
+	}
+		
 	/// @func create_next_cluster();
 	/// @desc Generates next cluster to drop
-	create_next_cluster : function()
+	create_next_cluster = function()
 	{
 		clear_cluster_from_grid();
 		shape_type = choose(CLUSTER_TYPE.BLOCK, CLUSTER_TYPE.LINE,
@@ -115,4 +88,5 @@ next_cluster =
 		generate_cluster_in_grid();
 	}
 }
+next_cluster = new preview_cluster(preview_grid);
 next_cluster.create_next_cluster();
