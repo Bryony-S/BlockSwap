@@ -375,6 +375,7 @@
     {"id":{"name":"scr_enums","path":"scripts/scr_enums/scr_enums.yy",},},
     {"id":{"name":"scr_helpers","path":"scripts/scr_helpers/scr_helpers.yy",},},
     {"id":{"name":"scr_structs","path":"scripts/scr_structs/scr_structs.yy",},},
+    {"id":{"name":"snd_bg_music","path":"sounds/snd_bg_music/snd_bg_music.yy",},},
     {"id":{"name":"spr_block_circle","path":"sprites/spr_block_circle/spr_block_circle.yy",},},
     {"id":{"name":"spr_block_diamond","path":"sprites/spr_block_diamond/spr_block_diamond.yy",},},
     {"id":{"name":"spr_block_empty","path":"sprites/spr_block_empty/spr_block_empty.yy",},},
