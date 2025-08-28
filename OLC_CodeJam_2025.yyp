@@ -377,6 +377,7 @@
     {"id":{"name":"scr_helpers","path":"scripts/scr_helpers/scr_helpers.yy",},},
     {"id":{"name":"scr_structs","path":"scripts/scr_structs/scr_structs.yy",},},
     {"id":{"name":"snd_bg_music","path":"sounds/snd_bg_music/snd_bg_music.yy",},},
+    {"id":{"name":"snd_match","path":"sounds/snd_match/snd_match.yy",},},
     {"id":{"name":"GM_Electricity_spr_Electricity1","path":"sprites/GM_Electricity_spr_Electricity1/GM_Electricity_spr_Electricity1.yy",},},
     {"id":{"name":"GM_Fire_spr_Fire","path":"sprites/GM_Fire_spr_Fire/GM_Fire_spr_Fire.yy",},},
     {"id":{"name":"GM_FlameIntensity_spr_Fire","path":"sprites/GM_FlameIntensity_spr_Fire/GM_FlameIntensity_spr_Fire.yy",},},

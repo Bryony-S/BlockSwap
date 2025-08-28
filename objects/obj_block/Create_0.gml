@@ -102,5 +102,6 @@ explode = function()
 {
 	change_state(BLOCK_STATE.EMPTY);
 	part_emitter_burst(explosion_ps, explosion_pemit, explosion_pt, 50);
+	audio_play_sound(snd_match, 1, false);
 }
 #endregion

@@ -1,7 +1,7 @@
 /// @desc Start game
 draw_set_font(fnt_main);
 global.player_score = 0;
-audio_play_sound(snd_bg_music, 1, true);
+audio_play_sound(snd_bg_music, 0.9, true);
 #region Create preview grid
 preview_grid = [];
 var _block_size = sprite_get_width(spr_block_empty);
