@@ -1,4 +1,5 @@
 /// @desc Start game
+draw_set_font(fnt_main);
 global.player_score = 0;
 instance_create_layer(0, 0, layer, obj_grid_manager);
 #region Create preview grid

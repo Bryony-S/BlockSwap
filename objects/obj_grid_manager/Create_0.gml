@@ -21,7 +21,7 @@ for (var i = 0; i < _grid_width; i++)
 	}
 }
 #endregion
-cluster =
+current_cluster =
 {
 	block_points : [new point(), new point(), new point(), new point()],
 	shape_type : CLUSTER_TYPE.NONE,
