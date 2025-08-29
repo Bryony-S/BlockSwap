@@ -18,3 +18,14 @@ function draw_text_solid_colour(_x, _y, _text, _colour)
 {
 	draw_text_colour(_x, _y, _text, _colour, _colour, _colour, _colour, 1);
 }
+
+/// @func draw_sprite_scaled(_sprite, _x, _y, _scale);
+/// @param {Asset.GMSprite} _sprite The sprite asset to draw
+/// @param {Real} _x The x position of the sprite to draw
+/// @param {Real} _y The y position of the sprite to draw
+/// @param {Real} _scale How much the sprite should be scaled by
+/// @desc Draws a sprite scaled to a specified size
+function draw_sprite_scaled(_sprite, _x, _y, _scale)
+{
+	draw_sprite_ext(_sprite, 0, _x, _y, _scale, _scale, 0, c_white, 1);
+}
