@@ -78,6 +78,7 @@
     {"id":{"name":"obj_grid_manager","path":"objects/obj_grid_manager/obj_grid_manager.yy",},},
     {"id":{"name":"ps_block_explosion","path":"particles/ps_block_explosion/ps_block_explosion.yy",},},
     {"id":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},},
+    {"id":{"name":"rm_start_menu","path":"rooms/rm_start_menu/rm_start_menu.yy",},},
     {"id":{"name":"rm_temp","path":"rooms/rm_temp/rm_temp.yy",},},
     {"id":{"name":"__InputBindingIsThumbstick","path":"scripts/__InputBindingIsThumbstick/__InputBindingIsThumbstick.yy",},},
     {"id":{"name":"__InputBindingScan","path":"scripts/__InputBindingScan/__InputBindingScan.yy",},},
@@ -393,6 +394,7 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
+    {"roomId":{"name":"rm_start_menu","path":"rooms/rm_start_menu/rm_start_menu.yy",},},
     {"roomId":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},},
     {"roomId":{"name":"rm_temp","path":"rooms/rm_temp/rm_temp.yy",},},
   ],
