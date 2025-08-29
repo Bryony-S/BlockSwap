@@ -1,6 +1,6 @@
 {
   "$GMFont":"",
-  "%Name":"fnt_main",
+  "%Name":"fnt_main_big",
   "AntiAlias":0,
   "applyKerning":0,
   "ascender":26,
@@ -561,10 +561,10 @@
   "last":0,
   "lineHeight":32,
   "maintainGms1Font":false,
-  "name":"fnt_main",
+  "name":"fnt_main_big",
   "parent":{
-    "name":"Fonts",
-    "path":"folders/Fonts.yy",
+    "name":"OLC_CodeJam_2025",
+    "path":"OLC_CodeJam_2025.yyp",
   },
   "pointRounding":0,
   "ranges":[

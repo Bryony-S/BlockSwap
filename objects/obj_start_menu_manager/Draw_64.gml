@@ -1,7 +1,7 @@
 /// @desc Draw start menu
 // Title
-draw_set_halign(fa_center);
-draw_text_solid_colour(room_width / 2, 10, "BLOCKSWAP", COLOUR_LIGHT_GREY);
+draw_set_font(fnt_title);
+draw_text_solid_colour(room_width / 2, 50, "BLOCKSWAP", COLOUR_LIGHT_GREY);
 #region Title shapes
 // Set size & position
 var _sprite_scale = 3
@@ -18,3 +18,8 @@ draw_sprite_scaled(spr_block_triangle, (room_width / 2) + ((_block_margin * 0.5)
 draw_sprite_scaled(spr_block_diamond, (room_width / 2) + ((_block_margin * 1.5) +
 	(_sprite_scaled_width * 1.5)), _block_height, _sprite_scale);
 #endregion
+// Menu options
+draw_set_font(fnt_main_big);
+draw_text_main(room_width / 2, 180, "START");
+draw_text_main(room_width / 2, 240, "HOW TO PLAY");
+draw_text_main(room_width / 2, 300, "CREDITS");

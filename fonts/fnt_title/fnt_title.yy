@@ -120,8 +120,8 @@
   "maintainGms1Font":false,
   "name":"fnt_title",
   "parent":{
-    "name":"OLC_CodeJam_2025",
-    "path":"OLC_CodeJam_2025.yyp",
+    "name":"Fonts",
+    "path":"folders/Fonts.yy",
   },
   "pointRounding":0,
   "ranges":[
