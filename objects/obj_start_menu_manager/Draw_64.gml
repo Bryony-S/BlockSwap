@@ -18,8 +18,14 @@ draw_sprite_scaled(spr_block_triangle, (room_width / 2) + ((_block_margin * 0.5)
 draw_sprite_scaled(spr_block_diamond, (room_width / 2) + ((_block_margin * 1.5) +
 	(_sprite_scaled_width * 1.5)), _block_height, _sprite_scale);
 #endregion
-// Menu options
+#region Menu options
+// Options text
 draw_set_font(fnt_main_big);
 draw_text_main(room_width / 2, 180, "START");
 draw_text_main(room_width / 2, 240, "HOW TO PLAY");
 draw_text_main(room_width / 2, 300, "CREDITS");
+// Cursor
+var _cursor_margin = 100;
+draw_sprite_stretched(spr_menu_cursor, 0, _cursor_margin, 142 + (menu_select * 60),
+	room_width - (_cursor_margin * 2), 80);
+#endregion

@@ -392,6 +392,7 @@
     {"id":{"name":"spr_block_square","path":"sprites/spr_block_square/spr_block_square.yy",},},
     {"id":{"name":"spr_block_triangle","path":"sprites/spr_block_triangle/spr_block_triangle.yy",},},
     {"id":{"name":"spr_grid_outline","path":"sprites/spr_grid_outline/spr_grid_outline.yy",},},
+    {"id":{"name":"spr_menu_cursor","path":"sprites/spr_menu_cursor/spr_menu_cursor.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",

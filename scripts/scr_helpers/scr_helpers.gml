@@ -29,3 +29,15 @@ function draw_sprite_scaled(_sprite, _x, _y, _scale)
 {
 	draw_sprite_ext(_sprite, 0, _x, _y, _scale, _scale, 0, c_white, 1);
 }
+
+/// @func normalize_enum(_enum_value, _enum_length);
+/// @param {Real} _enum_value The integer value of the enum
+/// @param {Real} _enum_length The length of the enum
+/// @return {Real} The normalized integer value of the enum
+/// @desc Normalizes enum integer values
+function normalize_enum(_enum_value, _enum_length)
+{
+	// Source: https://stackoverflow.com/a/61572168
+	var _remainder = _enum_value % _enum_length;
+	return (_remainder < 0) ? (_enum_length + _remainder) : _remainder;
+}
