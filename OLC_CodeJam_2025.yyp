@@ -73,6 +73,7 @@
   "name":"OLC_CodeJam_2025",
   "resources":[
     {"id":{"name":"fnt_main","path":"fonts/fnt_main/fnt_main.yy",},},
+    {"id":{"name":"fnt_title","path":"fonts/fnt_title/fnt_title.yy",},},
     {"id":{"name":"__InputUpdateController","path":"objects/__InputUpdateController/__InputUpdateController.yy",},},
     {"id":{"name":"obj_block","path":"objects/obj_block/obj_block.yy",},},
     {"id":{"name":"obj_game_manager","path":"objects/obj_game_manager/obj_game_manager.yy",},},
@@ -383,9 +384,6 @@
     {"id":{"name":"scr_structs","path":"scripts/scr_structs/scr_structs.yy",},},
     {"id":{"name":"snd_bg_music","path":"sounds/snd_bg_music/snd_bg_music.yy",},},
     {"id":{"name":"snd_match","path":"sounds/snd_match/snd_match.yy",},},
-    {"id":{"name":"GM_Electricity_spr_Electricity1","path":"sprites/GM_Electricity_spr_Electricity1/GM_Electricity_spr_Electricity1.yy",},},
-    {"id":{"name":"GM_Fire_spr_Fire","path":"sprites/GM_Fire_spr_Fire/GM_Fire_spr_Fire.yy",},},
-    {"id":{"name":"GM_FlameIntensity_spr_Fire","path":"sprites/GM_FlameIntensity_spr_Fire/GM_FlameIntensity_spr_Fire.yy",},},
     {"id":{"name":"spr_block_circle","path":"sprites/spr_block_circle/spr_block_circle.yy",},},
     {"id":{"name":"spr_block_diamond","path":"sprites/spr_block_diamond/spr_block_diamond.yy",},},
     {"id":{"name":"spr_block_empty","path":"sprites/spr_block_empty/spr_block_empty.yy",},},
