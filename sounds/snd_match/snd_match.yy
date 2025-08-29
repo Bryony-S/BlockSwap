@@ -12,8 +12,8 @@
   "duration":0.68750566,
   "name":"snd_match",
   "parent":{
-    "name":"OLC_CodeJam_2025",
-    "path":"OLC_CodeJam_2025.yyp",
+    "name":"SFX",
+    "path":"folders/Audio/SFX.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

@@ -1,6 +1,7 @@
 /// @desc Start game
 draw_set_font(fnt_main);
 global.player_score = 0;
+audio_stop_sound(snd_menu_music);
 audio_play_sound(snd_bg_music, 0.9, true);
 #region Create preview grid
 preview_grid = [];

@@ -10,6 +10,8 @@
   },
   "defaultScriptType":1,
   "Folders":[
+    {"$GMFolder":"","%Name":"Audio","folderPath":"folders/Audio.yy","name":"Audio","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"SFX","folderPath":"folders/Audio/SFX.yy","name":"SFX","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Fonts","folderPath":"folders/Fonts.yy","name":"Fonts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Input Plug-Ins","folderPath":"folders/Input Plug-Ins.yy","name":"Input Plug-Ins","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Binding Icons","folderPath":"folders/Input Plug-Ins/Binding Icons.yy","name":"Binding Icons","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -386,6 +388,9 @@
     {"id":{"name":"scr_structs","path":"scripts/scr_structs/scr_structs.yy",},},
     {"id":{"name":"snd_bg_music","path":"sounds/snd_bg_music/snd_bg_music.yy",},},
     {"id":{"name":"snd_match","path":"sounds/snd_match/snd_match.yy",},},
+    {"id":{"name":"snd_menu_confirm","path":"sounds/snd_menu_confirm/snd_menu_confirm.yy",},},
+    {"id":{"name":"snd_menu_music","path":"sounds/snd_menu_music/snd_menu_music.yy",},},
+    {"id":{"name":"snd_menu_select","path":"sounds/snd_menu_select/snd_menu_select.yy",},},
     {"id":{"name":"spr_block_circle","path":"sprites/spr_block_circle/spr_block_circle.yy",},},
     {"id":{"name":"spr_block_diamond","path":"sprites/spr_block_diamond/spr_block_diamond.yy",},},
     {"id":{"name":"spr_block_empty","path":"sprites/spr_block_empty/spr_block_empty.yy",},},

@@ -12,8 +12,8 @@
   "duration":57.835102,
   "name":"snd_bg_music",
   "parent":{
-    "name":"OLC_CodeJam_2025",
-    "path":"OLC_CodeJam_2025.yyp",
+    "name":"Audio",
+    "path":"folders/Audio.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
