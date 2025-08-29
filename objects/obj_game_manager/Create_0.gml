@@ -4,11 +4,12 @@ global.player_score = 0;
 audio_play_sound(snd_bg_music, 0.9, true);
 #region Create preview grid
 preview_grid = [];
-var _block_size = sprite_get_width(spr_block_empty);
-var _grid_width = 6;
-var _grid_height = 4;
-var _start_x = 100;
-var _start_y = (room_height / 2) - ((_grid_height / 2) * _block_size);
+var _image_scale = 2;
+var _block_size = sprite_get_width(spr_block_empty) * _image_scale;
+var _grid_width = 4;
+var _grid_height = 2;
+var _start_x = 120;
+var _start_y = room_height / 2;
 for (var i = 0; i < _grid_width; i++)
 {
 	for (var j = 0; j < _grid_height; j++)
@@ -19,6 +20,10 @@ for (var i = 0; i < _grid_width; i++)
 		{
 			position.xx = i;
 			position.yy = j;
+			draw_empty = false;
+			change_state(BLOCK_STATE.EMPTY);
+			image_xscale = _image_scale;
+			image_yscale = _image_scale;
 		}
 		preview_grid[i][j].parent_grid = preview_grid;
 	}
@@ -126,7 +131,7 @@ function preview_cluster(_grid) : cluster(_grid) constructor
 		shape_type = choose(CLUSTER_TYPE.BLOCK, CLUSTER_TYPE.LINE,
 		CLUSTER_TYPE.L_SHAPE, CLUSTER_TYPE.REVERSE_L_SHAPE, CLUSTER_TYPE.S_SHAPE,
 		CLUSTER_TYPE.T_SHAPE, CLUSTER_TYPE.Z_SHAPE);
-		create_new_shape_points(shape_type, 1, 1);
+		create_new_shape_points(shape_type, 0, 0);
 	}
 }
 next_cluster = new preview_cluster(preview_grid);

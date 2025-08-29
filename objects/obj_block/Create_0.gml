@@ -3,6 +3,7 @@
 state = BLOCK_STATE.EMPTY;
 position = new vector2(0, 0);
 parent_grid = [];
+draw_empty = true;
 #region Explosion particle system
 explosion_ps = part_system_create();
 part_system_draw_order(explosion_ps, true);
@@ -31,11 +32,13 @@ part_emitter_region(explosion_ps, explosion_pemit, -8, 8, -8, 8, ps_shape_ellips
 change_state = function(_new_state)
 {
 	state = _new_state;
+	visible = true;
 	// Change sprite
 	switch (state)
 	{
 		case BLOCK_STATE.EMPTY:
 			sprite_index = spr_block_empty;
+			if (!draw_empty) visible = false;
 			break;
 		case BLOCK_STATE.SQUARE:
 			sprite_index = spr_block_square;
