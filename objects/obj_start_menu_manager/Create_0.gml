@@ -1,5 +1,6 @@
 /// @desc Set up start menu
 randomise();
+// Start menu music
 audio_play_sound(snd_menu_music, 0.9, true);
 // Text alignment
 draw_set_halign(fa_center);

@@ -29,3 +29,10 @@ var _cursor_margin = 100;
 draw_sprite_stretched(spr_menu_cursor, 0, _cursor_margin, 142 + (menu_select * 60),
 	room_width - (_cursor_margin * 2), 80);
 #endregion
+// Menu controls
+draw_set_font(fnt_main_small);
+var _controls_text = "Arrow keys to change selection. Z to confirm.";
+if (InputDeviceGetAnyGamepadConnected()) _controls_text =
+	"D-Pad to change selection. A to confirm.";
+draw_text_solid_colour(room_width / 2, room_height - 15, _controls_text,
+	COLOUR_LIGHT_GREY);
