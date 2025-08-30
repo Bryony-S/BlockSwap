@@ -5,7 +5,7 @@ switch (menu_select)
 		room_goto(rm_game);
 		break;
 	case START_MENU_OPTIONS.HOW_TO_PLAY:
-		// TBA
+		room_goto(rm_how_to_play);
 		break;
 	case START_MENU_OPTIONS.CREDITS:
 		room_goto(rm_credits);
