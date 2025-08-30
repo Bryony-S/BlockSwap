@@ -22,3 +22,8 @@ Juju Adams, Alynne Keith and friends");
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 #endregion
+// Back to start menu text
+draw_set_font(fnt_main);
+var _controls_text = "X to go back to main menu";
+if (InputDeviceGetAnyGamepadConnected()) _controls_text = "B to go back to main menu";
+draw_text_main(room_width / 2, room_height - 20, _controls_text);

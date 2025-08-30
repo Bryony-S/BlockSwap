@@ -1,7 +1,7 @@
 /// @desc Set up start menu
 randomise();
 // Start menu music
-audio_play_sound(snd_menu_music, 0.9, true);
+if (!audio_is_playing(snd_menu_music)) audio_play_sound(snd_menu_music, 0.9, true);
 // Text alignment
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
