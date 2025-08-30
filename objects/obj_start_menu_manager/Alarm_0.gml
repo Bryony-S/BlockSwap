@@ -8,6 +8,6 @@ switch (menu_select)
 		// TBA
 		break;
 	case START_MENU_OPTIONS.CREDITS:
-		// TBA
+		room_goto(rm_credits);
 		break;
 }
