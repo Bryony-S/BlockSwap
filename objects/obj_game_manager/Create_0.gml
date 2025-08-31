@@ -9,7 +9,7 @@ var _image_scale = 2;
 var _block_size = sprite_get_width(spr_block_empty) * _image_scale;
 var _grid_width = 4;
 var _grid_height = 2;
-var _start_x = 120;
+var _start_x = 100;
 var _start_y = room_height / 2;
 for (var i = 0; i < _grid_width; i++)
 {

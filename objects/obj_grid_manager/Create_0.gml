@@ -1,5 +1,4 @@
 /// @desc Define grid
-randomise();
 // Variables
 horizontal_movement_cooldown = 15;
 horizontal_movement_timer = horizontal_movement_cooldown;

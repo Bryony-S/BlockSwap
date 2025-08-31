@@ -2,10 +2,11 @@
 // Score
 draw_set_font(fnt_main);
 draw_set_halign(fa_left);
-draw_text_main(5, 20, $"Score: {global.player_score}");
+draw_text_main(10, 25, $"Score: {global.player_score}");
 // Next cluster preview
 draw_set_halign(fa_center);
-draw_text_main(150, 150, "Next:");
+draw_text_main(150, 130, "Next:");
+draw_sprite_stretched(spr_menu_cursor, 0, 60, 140, 175, 110);
 #region Game over UI
 // Game over overlay
 if global.game_over
