@@ -5,7 +5,7 @@ if (!audio_is_playing(snd_menu_music)) audio_play_sound(snd_menu_music, 0.9, tru
 // Text alignment
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
-// Menu options
+#region Menu
 enum START_MENU_OPTIONS
 {
 	START = 0,
@@ -15,7 +15,9 @@ enum START_MENU_OPTIONS
 menu_select = START_MENU_OPTIONS.START;
 options_length = 3;
 player_can_interact = true;
-
+cursor_visible = true;
+#endregion
+#region Functions
 /// @func select_option();
 /// @desc Player selects menu option
 select_option = function()
@@ -23,6 +25,9 @@ select_option = function()
 	audio_play_sound(snd_menu_confirm, 1, false);
 	player_can_interact = false;
 	alarm[0] = CONFIRM_WAIT_TIME;
+	// Blink cursor
+	cursor_visible = false;
+	alarm[1] = 10;
 }
 
 /// @func change_menu_selection(_selection_change);
@@ -33,3 +38,4 @@ change_menu_selection = function(_selection_change)
 	audio_play_sound(snd_menu_select, 1, false);
 	menu_select = normalize_enum(menu_select + _selection_change, options_length);
 }
+#endregion
