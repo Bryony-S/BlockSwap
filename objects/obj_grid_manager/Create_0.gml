@@ -4,7 +4,8 @@ randomise();
 horizontal_movement_cooldown = 15;
 horizontal_movement_timer = horizontal_movement_cooldown;
 match_found_wait_time = 15;
-waiting = false;
+waiting = true;
+alarm[1] = 30; // Short delay on game start
 #region Create grid
 game_grid = [];
 var _block_size = sprite_get_width(spr_block_empty);
