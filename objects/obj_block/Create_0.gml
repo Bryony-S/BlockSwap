@@ -1,9 +1,11 @@
 /// @desc Define block variables and functions
-// Variables
+#region Variables
 state = BLOCK_STATE.EMPTY;
 position = new vector2(0, 0);
 parent_grid = [];
 draw_empty = true;
+points_visible = false;
+points = 0;
 #region Explosion particle system
 explosion_ps = part_system_create();
 part_system_draw_order(explosion_ps, true);
@@ -24,6 +26,7 @@ part_type_life(explosion_pt, 15, 30);
 // Explosion particle emitter
 explosion_pemit = part_emitter_create(explosion_ps);
 part_emitter_region(explosion_ps, explosion_pemit, -8, 8, -8, 8, ps_shape_ellipse, ps_distr_gaussian);
+#endregion
 #endregion
 #region Functions
 /// @func change_state(_new_state);
@@ -101,10 +104,13 @@ get_vertical_matches = function()
 
 /// @func explode();
 /// @desc Blocks explodes and goes back to empty
-explode = function()
+explode = function(_points)
 {
 	change_state(BLOCK_STATE.EMPTY);
 	part_emitter_burst(explosion_ps, explosion_pemit, explosion_pt, 50);
 	audio_play_sound(snd_match, 1, false);
+	points_visible = true;
+	points = _points;
+	alarm[0] = 40;
 }
 #endregion

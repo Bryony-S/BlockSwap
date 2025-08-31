@@ -82,6 +82,7 @@
     {"id":{"name":"fnt_main_big","path":"fonts/fnt_main_big/fnt_main_big.yy",},},
     {"id":{"name":"fnt_main_small","path":"fonts/fnt_main_small/fnt_main_small.yy",},},
     {"id":{"name":"fnt_main","path":"fonts/fnt_main/fnt_main.yy",},},
+    {"id":{"name":"fnt_points","path":"fonts/fnt_points/fnt_points.yy",},},
     {"id":{"name":"fnt_title","path":"fonts/fnt_title/fnt_title.yy",},},
     {"id":{"name":"__InputUpdateController","path":"objects/__InputUpdateController/__InputUpdateController.yy",},},
     {"id":{"name":"obj_block","path":"objects/obj_block/obj_block.yy",},},

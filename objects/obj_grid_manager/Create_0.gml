@@ -365,7 +365,7 @@ check_grid_for_tile_match = function()
 			if (_horizontal_match[i][j] > 0) || (_vertical_match[i][j] > 0)
 			{
 				// Remove block and add points
-				game_grid[i][j].explode();
+				game_grid[i][j].explode(_horizontal_match[i][j] + _vertical_match[i][j]);
 				_match_found = true;
 				global.player_score += _horizontal_match[i][j] + _vertical_match[i][j];
 			}
