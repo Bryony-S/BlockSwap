@@ -39,25 +39,6 @@ function cluster(_grid) constructor
 	block_points = [new point(), new point(), new point(), new point()];
 	shape_type = CLUSTER_TYPE.NONE;
 	
-	/// @func generate_cluster_in_grid();
-	/// @desc Creates cluster in grid
-	generate_cluster_in_grid = function()
-	{
-		for (var i = 0; i < array_length(block_points); i++)
-		{
-			var _x = block_points[i].position.xx;
-			var _y = block_points[i].position.yy;
-			if (block_grid[_x, _y].state) == BLOCK_STATE.EMPTY
-			{
-				block_grid[_x, _y].change_state(block_points[i].block_shape);
-			}
-			else // Game over
-			{
-				room_restart();
-			}
-		}
-	}
-	
 	/// @func clear_cluster_from_grid();
 	/// @desc Clears cluster from grid
 	clear_cluster_from_grid = function()

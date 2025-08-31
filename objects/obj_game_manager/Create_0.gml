@@ -64,7 +64,19 @@ check_cluster_for_tile_match = function()
 	return _match_found;
 }
 function preview_cluster(_grid) : cluster(_grid) constructor
-{	
+{
+	/// @func generate_cluster_in_grid();
+	/// @desc Creates cluster in grid
+	generate_cluster_in_grid = function()
+	{
+		for (var i = 0; i < array_length(block_points); i++)
+		{
+			var _x = block_points[i].position.xx;
+			var _y = block_points[i].position.yy;
+			block_grid[_x, _y].change_state(block_points[i].block_shape);
+		}
+	}
+	
 	/// @func create_new_shape_points(_shape_type, _start_x, _start_y);
 	/// @param {Enum.CLUSTER_TYPE} _shape_type The shape of the cluster
 	/// @param {Real} _start_x The grid x point of the top-left corner of the shape

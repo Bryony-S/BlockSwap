@@ -35,6 +35,25 @@ function game_cluster(_grid, _cluster_source) : cluster(_grid) constructor
 	is_falling_faster = false
 	cluster_source = _cluster_source;
 	
+	/// @func generate_cluster_in_grid();
+	/// @desc Creates cluster in grid
+	generate_cluster_in_grid = function()
+	{
+		for (var i = 0; i < array_length(block_points); i++)
+		{
+			var _x = block_points[i].position.xx;
+			var _y = block_points[i].position.yy;
+			if (block_grid[_x, _y].state) == BLOCK_STATE.EMPTY
+			{
+				block_grid[_x, _y].change_state(block_points[i].block_shape);
+			}
+			else // Game over
+			{
+				room_restart();
+			}
+		}
+	}
+	
 	/// @func get_next_cluster();
 	/// @desc Gets next cluster from preview
 	get_next_cluster = function()
