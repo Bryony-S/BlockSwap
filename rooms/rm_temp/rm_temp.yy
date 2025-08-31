@@ -13,8 +13,8 @@
   ],
   "name":"rm_temp",
   "parent":{
-    "name":"OLC_CodeJam_2025",
-    "path":"OLC_CodeJam_2025.yyp",
+    "name":"Rooms",
+    "path":"folders/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

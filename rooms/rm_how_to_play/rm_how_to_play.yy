@@ -21,8 +21,8 @@
   ],
   "name":"rm_how_to_play",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"Menus",
+    "path":"folders/Rooms/Game/Menus.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

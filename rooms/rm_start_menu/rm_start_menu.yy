@@ -19,8 +19,8 @@
   ],
   "name":"rm_start_menu",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"Menus",
+    "path":"folders/Rooms/Game/Menus.yy",
   },
   "parentRoom":null,
   "physicsSettings":{
