@@ -47,9 +47,11 @@ function game_cluster(_grid, _cluster_source) : cluster(_grid) constructor
 			{
 				block_grid[_x, _y].change_state(block_points[i].block_shape);
 			}
-			else // Game over
+			else
 			{
-				room_restart();
+				// Game over
+				obj_game_manager.game_over();
+				break;
 			}
 		}
 	}
@@ -66,9 +68,12 @@ function game_cluster(_grid, _cluster_source) : cluster(_grid) constructor
 			block_points[i].block_shape = cluster_source.block_points[i].block_shape;
 		}
 		generate_cluster_in_grid();
-		cluster_source.create_next_cluster();
-		// Move cluster to start randomly along the horizontal axis
-		repeat(irandom(array_length(block_grid) - 2)) move_horizontally(1);
+		if !obj_grid_manager.waiting
+		{
+			cluster_source.create_next_cluster();
+			// Move cluster to start randomly along the horizontal axis
+			repeat(irandom(array_length(block_grid) - 2)) move_horizontally(1);
+		}
 	}
 	
 	/// @func fall();

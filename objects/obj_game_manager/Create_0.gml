@@ -30,6 +30,7 @@ for (var i = 0; i < _grid_width; i++)
 	}
 }
 #endregion
+#region Functions
 /// @func check_cluster_for_tile_match();
 /// @return {Bool} Returns true if at least one match was found, false if none
 /// @desc Checks cluster for any vertical or horizontal block matches of 3+ in a row
@@ -63,6 +64,15 @@ check_cluster_for_tile_match = function()
 	}
 	return _match_found;
 }
+/// @func game_over();
+/// @desc Player loses the game
+game_over = function()
+{
+	// Stop game from playing
+	obj_grid_manager.waiting = true;
+	
+}
+#endregion
 function preview_cluster(_grid) : cluster(_grid) constructor
 {
 	/// @func generate_cluster_in_grid();
