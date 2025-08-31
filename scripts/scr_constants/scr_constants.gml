@@ -1,3 +1,5 @@
 #macro MIN_MATCH 3
+// Colours
 #macro COLOUR_WHITE #DEE2E6
 #macro COLOUR_LIGHT_GREY #ADB5BD
+#macro COLOUR_DARK_GREY #212529

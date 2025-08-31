@@ -68,7 +68,7 @@ function game_cluster(_grid, _cluster_source) : cluster(_grid) constructor
 			block_points[i].block_shape = cluster_source.block_points[i].block_shape;
 		}
 		generate_cluster_in_grid();
-		if !obj_grid_manager.waiting
+		if !global.game_over
 		{
 			cluster_source.create_next_cluster();
 			// Move cluster to start randomly along the horizontal axis

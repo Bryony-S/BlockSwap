@@ -1,6 +1,6 @@
 /// @desc Start game
-draw_set_font(fnt_main);
 global.player_score = 0;
+global.game_over = false;
 audio_stop_sound(snd_menu_music);
 audio_play_sound(snd_bg_music, 0.9, true);
 #region Create preview grid
@@ -70,7 +70,7 @@ game_over = function()
 {
 	// Stop game from playing
 	obj_grid_manager.waiting = true;
-	
+	global.game_over = true;
 }
 #endregion
 function preview_cluster(_grid) : cluster(_grid) constructor
