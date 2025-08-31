@@ -1,4 +1,5 @@
 #macro MIN_MATCH 3
+#macro CONFIRM_WAIT_TIME 40
 // Colours
 #macro COLOUR_WHITE #DEE2E6
 #macro COLOUR_LIGHT_GREY #ADB5BD

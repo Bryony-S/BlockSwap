@@ -22,7 +22,7 @@ select_option = function()
 {
 	audio_play_sound(snd_menu_confirm, 1, false);
 	player_can_interact = false;
-	alarm[0] = 40;
+	alarm[0] = CONFIRM_WAIT_TIME;
 }
 
 /// @func change_menu_selection(_selection_change);
