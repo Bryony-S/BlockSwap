@@ -5,7 +5,7 @@ draw_set_halign(fa_left);
 draw_text_main(5, 20, $"Score: {global.player_score}");
 // Next cluster preview
 draw_set_halign(fa_center);
-draw_text_main(200, 150, "Next:");
+draw_text_main(150, 150, "Next:");
 #region Game over UI
 // Game over overlay
 if global.game_over
