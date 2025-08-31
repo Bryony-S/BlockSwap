@@ -85,6 +85,7 @@
     {"id":{"name":"obj_game_manager","path":"objects/obj_game_manager/obj_game_manager.yy",},},
     {"id":{"name":"obj_grid_manager","path":"objects/obj_grid_manager/obj_grid_manager.yy",},},
     {"id":{"name":"obj_how_to_play_manager","path":"objects/obj_how_to_play_manager/obj_how_to_play_manager.yy",},},
+    {"id":{"name":"obj_html5_fullscreen_manager","path":"objects/obj_html5_fullscreen_manager/obj_html5_fullscreen_manager.yy",},},
     {"id":{"name":"obj_move_cluster_anim","path":"objects/obj_move_cluster_anim/obj_move_cluster_anim.yy",},},
     {"id":{"name":"obj_rotate_cluster_anim","path":"objects/obj_rotate_cluster_anim/obj_rotate_cluster_anim.yy",},},
     {"id":{"name":"obj_start_menu_manager","path":"objects/obj_start_menu_manager/obj_start_menu_manager.yy",},},
