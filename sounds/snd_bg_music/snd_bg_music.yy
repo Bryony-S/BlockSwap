@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":57.835102,
+  "duration":57.575397,
   "name":"snd_bg_music",
   "parent":{
     "name":"Audio",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_bg_music.mp3",
+  "soundFile":"snd_bg_music.ogg",
   "type":0,
   "volume":1.0,
 }
