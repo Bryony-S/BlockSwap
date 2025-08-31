@@ -1,5 +1,6 @@
 # BlockSwap
 An arcade puzzle match-3 game made for OLC CodeJam 2025. Match the shapes to remove blocks and stop the grid from filling up to the top. Play online or download Windows app at [itch.io](https://bryony-s.itch.io/blockswap).
+![gameplay_anim2](https://github.com/user-attachments/assets/b41f7fbc-eab9-4007-a21f-0ec044fb0435)
 
 ## Credits
 - Game made using GameMaker
